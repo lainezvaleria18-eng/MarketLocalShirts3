@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="container mt-5">
+    <div class="row align-items-center">
+
+        <div class="col-md-6 text-white">
+            <h1 class="fw-bold">MarketLocal Shirts</h1>
+            <p class="fs-5">Tienda en línea de playeras para hombre</p>
+
+            <a asp-controller="Cliente" asp-action="Catalogo" class="btn btn-primary mt-3">
+                Ver catálogo
+            </a>
+
+            <p class="mt-4 fst-italic">
+                Explora nuestro catálogo y encuentra tu estilo ideal.
+            </p>
+        </div>
+
+        <div class="col-md-6 text-center">
+            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
+                 class="img-fluid rounded shadow"
+                 style="max-height:450px;"
+                 alt="Playera de hombre">
+        </div>
+
+    </div>
+</div>

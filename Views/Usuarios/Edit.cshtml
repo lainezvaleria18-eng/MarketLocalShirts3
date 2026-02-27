@@ -1,0 +1,31 @@
+﻿@model MarketLocalShirts3.Models.Usuario
+
+<div style="display:flex;justify-content:center;margin-top:80px">
+    <div style="width:360px;border:1px solid #333;padding:25px;background:#0b0b0b">
+
+        <div style="background:#1e90ff;color:white;text-align:center;padding:8px;font-weight:bold">
+            Formulario de usuario
+        </div>
+
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="IdUsuario" />
+
+            <label class="text-white mt-3">Nombre:</label>
+            <input asp-for="Nombre" class="form-control form-control-sm" />
+
+            <label class="text-white mt-2">Correo:</label>
+            <input asp-for="Correo" class="form-control form-control-sm" />
+
+            <label class="text-white mt-2">Contraseña:</label>
+            <input asp-for="Contrasena" class="form-control form-control-sm" />
+
+            <label class="text-white mt-2">Rol ( Admin ):</label>
+            <select asp-for="IdRol" asp-items="ViewBag.IdRol" class="form-control form-control-sm"></select>
+
+            <div style="display:flex;justify-content:space-between;margin-top:20px">
+                <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+                <a asp-action="Index" class="btn btn-secondary btn-sm">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

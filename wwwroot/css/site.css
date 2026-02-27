@@ -1,0 +1,38 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+.metodo-pago-box {
+    border: 1px solid #444;
+    padding: 15px;
+    width: 260px;
+    background-color: #111;
+}
+
+.metodo-pago-titulo {
+    border: 1px solid #444;
+    padding: 6px 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: white;
+    width: fit-content;
+    background-color: #000;
+}

@@ -1,0 +1,27 @@
+﻿@model IEnumerable<MarketLocalShirts3.Models.Producto>
+
+<h2 class="text-white mb-4">Catálogo de Playeras para Hombre</h2>
+
+<div class="row">
+    @foreach (var p in Model)
+    {
+        <div class="col-md-3 mb-4">
+            <div class="card bg-dark text-white h-100">
+                <img src="~/imagenes/@p.Imagen" class="card-img-top" style="height:300px; object-fit:cover;">
+                <div class="card-body">
+                    <p>Nombre: @p.NombreProducto</p>
+                    <p>Marca: @p.IdMarcaNavigation.NombreMarca</p>
+                    <p>Precio: $@p.Precio</p>
+                </div>
+                <div class="card-footer bg-dark border-0">
+                    <a asp-controller="Carrito"
+                       asp-action="Agregar"
+                       asp-route-id="@p.IdProducto"
+                       class="btn btn-primary w-100">
+                        Agregar al carrito
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

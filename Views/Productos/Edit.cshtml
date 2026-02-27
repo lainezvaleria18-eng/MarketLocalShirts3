@@ -1,0 +1,36 @@
+﻿@model MarketLocalShirts3.Models.Producto
+
+<h2>Editar producto</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="IdProducto" />
+
+    <div class="form-group">
+        <label>Nombre</label>
+        <input asp-for="NombreProducto" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Precio</label>
+        <input asp-for="Precio" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Stock</label>
+        <input asp-for="Stock" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Imagen</label>
+        <input asp-for="Imagen" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Marca</label>
+        <select asp-for="IdMarca" class="form-control" asp-items="ViewBag.IdMarca">
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Cancelar</a>
+</form>

@@ -1,0 +1,29 @@
+﻿@model List<MarketLocalShirts3.Models.Producto>
+
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Marca</th>
+            <th>Precio</th>
+            <th>Eliminar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.NombreProducto</td>
+                <td>@p.IdMarcaNavigation.NombreMarca</td>
+                <td>$@p.Precio</td>
+                <td>
+                    <a asp-action="Eliminar"
+                       asp-route-id="@p.IdProducto"
+                       class="btn btn-danger">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

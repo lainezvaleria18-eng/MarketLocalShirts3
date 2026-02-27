@@ -1,0 +1,18 @@
+﻿@model MarketLocalShirts3.Models.Producto
+
+<h2>Eliminar producto</h2>
+
+<h4>¿Estás seguro de eliminar este producto?</h4>
+
+<div class="mb-3">
+    <strong>Nombre:</strong> @Model.NombreProducto <br />
+    <strong>Precio:</strong> @Model.Precio <br />
+    <strong>Stock:</strong> @Model.Stock <br />
+    <strong>Marca:</strong> @Model.IdMarcaNavigation.NombreMarca
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="IdProducto" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
