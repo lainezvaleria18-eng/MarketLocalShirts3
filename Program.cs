@@ -1,7 +1,9 @@
 using MarketLocalShirts3.Models;
 using Microsoft.EntityFrameworkCore;
+// codigos que debemos  ver 
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddControllersWithViews();
 
