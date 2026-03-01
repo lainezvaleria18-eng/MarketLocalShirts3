@@ -31,7 +31,7 @@
     Total: $@ViewBag.Total
 </h4>
 
-<h5 class="text-white">
+<form asp-action="FinalizarPedido" method="post">
     Método de pago: @ViewBag.MetodoPago
         Finalizar pedido
 
@@ -39,4 +39,3 @@
    asp-action="Catalogo"
    class="btn btn-primary mt-3">
     Volver al catálogo
-</a>
