@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿#nullable disable
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MarketLocalShirts3.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace MarketLocalShirts3.Controllers
 {
@@ -15,11 +18,12 @@ namespace MarketLocalShirts3.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Inicio()
+        public IActionResult Inicio()
         {
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> Catalogo()
         {
             var productos = await _context.Productos
@@ -32,6 +36,30 @@ namespace MarketLocalShirts3.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(string correo, string password)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, correo),
+                new Claim(ClaimTypes.Email, correo)
+            };
+
+            var identity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme
+            );
+
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal
+            );
+
+            return RedirectToAction("Catalogo");
         }
 
         public IActionResult Registro()
