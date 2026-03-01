@@ -1,6 +1,7 @@
 using MarketLocalShirts3.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+//codigos  que  tenemos que tener cuidado 
 
 var builder = WebApplication.CreateBuilder(args);
 
