@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MarketLocalShirts3.Models;
 using System.Text.Json;
+using System.Linq;
 
 namespace MarketLocalShirts3.Controllers
 {
@@ -78,13 +79,47 @@ namespace MarketLocalShirts3.Controllers
         [HttpPost]
         public IActionResult ConfirmarPedido(string metodoPago)
         {
-            HttpContext.Session.Remove("Carrito");
+            HttpContext.Session.SetString("MetodoPago", metodoPago);
             return RedirectToAction("PedidoConfirmado");
         }
 
         public IActionResult PedidoConfirmado()
         {
-            return View();
+            var carrito = ObtenerCarrito();
+
+            decimal total = carrito.Sum(x => x.Precio * x.Cantidad);
+
+            ViewBag.Total = total;
+            ViewBag.MetodoPago = HttpContext.Session.GetString("MetodoPago");
+
+            return View(carrito);
+        }
+
+        [HttpPost]
+        public IActionResult FinalizarPedido()
+        {
+            var carrito = ObtenerCarrito();
+
+            foreach (var item in carrito)
+            {
+                var producto = _context.Productos
+                    .FirstOrDefault(p => p.IdProducto == item.IdProducto);
+
+                if (producto != null)
+                {
+                    producto.Stock -= item.Cantidad;
+
+                    if (producto.Stock < 0)
+                        producto.Stock = 0;
+                }
+            }
+
+            _context.SaveChanges();
+
+            HttpContext.Session.Remove("Carrito");
+            HttpContext.Session.Remove("MetodoPago");
+
+            return RedirectToAction("Catalogo", "Cliente");
         }
 
         public IActionResult AgregarMas()
@@ -95,6 +130,7 @@ namespace MarketLocalShirts3.Controllers
         private List<CarritoItem> ObtenerCarrito()
         {
             var data = HttpContext.Session.GetString("Carrito");
+
             if (data == null)
                 return new List<CarritoItem>();
 

@@ -24,6 +24,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Cliente}/{action=Catalogo}/{id?}");
+    pattern: "{controller=Cliente}/{action=Inicio}/{id?}");
 
 app.Run();
