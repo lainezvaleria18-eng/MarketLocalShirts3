@@ -70,8 +70,8 @@ namespace MarketLocalShirts3.Controllers
                 _context.Usuarios.Remove(usuario);
                 await _context.SaveChangesAsync();
             }
-
-            return RedirectToAction("Index"); 
+            
+            return RedirectToAction("Index");
         }
     }
 }
