@@ -10,7 +10,8 @@ public partial class Pedido
     public int IdUsuario { get; set; }
 
     public DateTime Fecha { get; set; }
-
+   
+    /// Monto final calcula la compra  acordarme 
     public decimal Total { get; set; }
 
     public string TipoPago { get; set; } = null!;
