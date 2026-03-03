@@ -66,5 +66,15 @@ namespace MarketLocalShirts3.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public async Task<IActionResult> Registro(Usuario usuario)
+        {
+            usuario.IdRol = 2;
+
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Usuarios");
+        }
     }
 }

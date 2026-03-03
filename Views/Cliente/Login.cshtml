@@ -2,9 +2,11 @@
     ViewData["Title"] = "Iniciar sesión";
 }
 
-<div class="d-flex justify-content-center mt-5">
-    <div class="card bg-dark text-white p-4" style="width:400px;">
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card bg-dark text-white p-4 shadow" style="width:400px;">
+
         <h4 class="text-center mb-4">Iniciar sesión</h4>
+
 
         <form method="post">
             <input name="correo" class="form-control mb-3" placeholder="Correo" />
@@ -14,5 +16,14 @@
                 Ingresar
             </button>
         </form>
+
+        <input class="form-control mb-3" placeholder="Correo" />
+        <input type="password" class="form-control mb-4" placeholder="Contraseña"/>
+
+        <button class="btn btn-primary w-100">
+            Ingresar
+        </button>
+
+
     </div>
 </div>
