@@ -137,7 +137,7 @@ namespace MarketLocalShirts3.Controllers
             return JsonSerializer.Deserialize<List<CarritoItem>>(data);
         }
 
-        private void GuardarCarrito(List<CarritoItem> carrito)
+            private void GuardarCarrito (List<CarritoItem>carrito)
         {
             HttpContext.Session.SetString("Carrito", JsonSerializer.Serialize(carrito));
         }
