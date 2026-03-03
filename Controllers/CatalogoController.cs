@@ -15,6 +15,7 @@ namespace MarketLocalShirts3.Controllers
 
         public async Task<IActionResult> Index()
         {
+       
             var productos = await _context.Productos.ToListAsync();
             return View(productos);
         }
