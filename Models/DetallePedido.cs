@@ -18,6 +18,6 @@ public partial class DetallePedido
     public decimal Subtotal { get; set; }
 
     public virtual Pedido IdPedidoNavigation { get; set; } = null!;
-
+    /// Permite acceder a los detalles del Producto
     public virtual Producto IdProductoNavigation { get; set; } = null!;
 }
