@@ -1,7 +1,6 @@
 ﻿@model List<MarketLocalShirts3.Models.CarritoItem>
 
 @{
-
     var metodoPago = ViewBag.MetodoPago;
     decimal total = Model.Sum(x => x.Precio * x.Cantidad);
 }
@@ -41,27 +40,15 @@ else
 }
 
 <h4 class="text-white">
-    Total: $@total</h4>
-
-<h4 class="text-white">
-  Método de pago: <span class="text-info"> @metodoPago</span>
+    Total: $@total
 </h4>
 
+<h4 class="text-white">
+    Método de pago: <span class="text-info">@metodoPago</span>
+</h4>
 
 <form asp-action="FinalizarPedido" method="post">
     <button type="submit" class="btn btn-success mt-3">
         Finalizar pedido
     </button>
 </form>
-
-
-<h5 class="text-white">
-    Método de pago: @ViewBag.MetodoPago <br />
-</h5>
-
-<form asp-controller="Carrito" asp-action="FinalizarPedido" method="post">
-    <button type="submit" class="btn btn-primary mt-3">
-        Finalizar pedido
-    </button>
-</form>
-
