@@ -12,6 +12,7 @@ namespace MarketLocalShirts3.Models
         public int IdMarca { get; set; }
 
         public virtual Marca IdMarcaNavigation { get; set; } = null!;
+
         public virtual ICollection<DetallePedido> DetallePedidos { get; set; } = new List<DetallePedido>();
     }
 }

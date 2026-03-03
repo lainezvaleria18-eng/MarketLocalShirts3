@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿#nullable disable
+using Microsoft.AspNetCore.Mvc;
 using MarketLocalShirts3.Models;
 using System.Text.Json;
 using System.Linq;
@@ -16,8 +17,7 @@ namespace MarketLocalShirts3.Controllers
 
         public IActionResult Index()
         {
-            var carrito = ObtenerCarrito();
-            return View(carrito);
+            return View(ObtenerCarrito());
         }
 
         public IActionResult Agregar(int id)
@@ -79,6 +79,14 @@ namespace MarketLocalShirts3.Controllers
         [HttpPost]
         public IActionResult ConfirmarPedido(string metodoPago)
         {
+
+            var carrito = ObtenerCarrito();
+
+            ViewBag.MetodoPago = metodoPago;
+            ViewBag.Total = carrito.Sum(i => i.Precio * i.Cantidad);
+
+            return View("PedidoConfirmado", carrito);
+
             HttpContext.Session.SetString("MetodoPago", metodoPago);
             return RedirectToAction("PedidoConfirmado");
         }
@@ -120,10 +128,33 @@ namespace MarketLocalShirts3.Controllers
             HttpContext.Session.Remove("MetodoPago");
 
             return RedirectToAction("Catalogo", "Cliente");
+
         }
 
-        public IActionResult AgregarMas()
+        [HttpPost]
+        public IActionResult FinalizarPedido()
         {
+            var carrito = ObtenerCarrito();
+
+            foreach (var item in carrito)
+            {
+                var producto = _context.Productos
+                    .FirstOrDefault(p => p.IdProducto == item.IdProducto);
+
+                if (producto != null)
+                {
+                    producto.Stock -= item.Cantidad;
+
+                    if (producto.Stock < 0)
+                        producto.Stock = 0;
+                }
+            }
+
+            _context.SaveChanges();
+
+            HttpContext.Session.Remove("Carrito");
+            HttpContext.Session.Remove("MetodoPago");
+
             return RedirectToAction("Catalogo", "Cliente");
         }
 
@@ -131,14 +162,19 @@ namespace MarketLocalShirts3.Controllers
         {
             var data = HttpContext.Session.GetString("Carrito");
 
+            if (string.IsNullOrEmpty(data))
+
+
             if (data == null)
+
                 return new List<CarritoItem>();
 
-            return JsonSerializer.Deserialize<List<CarritoItem>>(data);
+            return JsonSerializer.Deserialize<List<CarritoItem>>(data) ?? new List<CarritoItem>();
         }
 
             private void GuardarCarrito (List<CarritoItem>carrito)
         {
+       
             HttpContext.Session.SetString("Carrito", JsonSerializer.Serialize(carrito));
         }
     }
