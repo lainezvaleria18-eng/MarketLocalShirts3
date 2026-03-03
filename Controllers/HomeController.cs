@@ -1,3 +1,4 @@
+/// Aquí manejo la vista inicial, login y registro.
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MarketLocalShirts3.Models;

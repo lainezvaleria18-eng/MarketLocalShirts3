@@ -19,3 +19,4 @@ public partial class Usuario
 
     public virtual ICollection<Pedido> Pedidos { get; set; } = new List<Pedido>();
 }
+/// Esta clase representa a los usuarios que pueden comprar en el sistema.

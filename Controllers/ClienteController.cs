@@ -40,3 +40,4 @@ namespace MarketLocalShirts3.Controllers
         }
     }
 }
+/// Muestra la vista para que el cliente se registre.
