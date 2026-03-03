@@ -11,3 +11,4 @@
         public decimal Subtotal => Precio * Cantidad;
     }
 }
+// En esta clase manejamos carrito de compras
