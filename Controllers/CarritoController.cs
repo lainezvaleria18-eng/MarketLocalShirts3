@@ -80,8 +80,16 @@ namespace MarketLocalShirts3.Controllers
         public IActionResult ConfirmarPedido(string metodoPago)
         {
             var carrito = ObtenerCarrito();
+
+
+            ViewBag.MetodoPago = metodoPago;
+            ViewBag.Total = carrito.Sum(i => i.Precio * i.Cantidad);
+
+            return View("PedidoConfirmado", carrito);
+
             HttpContext.Session.SetString("MetodoPago", metodoPago);
             return RedirectToAction("PedidoConfirmado");
+
         }
 
         public IActionResult PedidoConfirmado()
@@ -121,7 +129,12 @@ namespace MarketLocalShirts3.Controllers
             HttpContext.Session.Remove("MetodoPago");
 
             return RedirectToAction("Catalogo", "Cliente");
+
+
+            }
+
         }
+
 
         private List<CarritoItem> ObtenerCarrito()
 
