@@ -101,6 +101,7 @@ namespace MarketLocalShirts3.Controllers
         }
 
         [HttpPost]
+
         public IActionResult FinalizarPedido()
         {
             var carrito = ObtenerCarrito();
@@ -126,7 +127,7 @@ namespace MarketLocalShirts3.Controllers
 
             return RedirectToAction("Catalogo", "Cliente");
 
-            }
+        }
 
         private List<CarritoItem> ObtenerCarrito()
         {
@@ -135,16 +136,16 @@ namespace MarketLocalShirts3.Controllers
             if (string.IsNullOrEmpty(data))
 
 
-            if (data == null)
+                if (data == null)
 
-                return new List<CarritoItem>();
+                    return new List<CarritoItem>();
 
             return JsonSerializer.Deserialize<List<CarritoItem>>(data) ?? new List<CarritoItem>();
         }
 
-            private void GuardarCarrito (List<CarritoItem>carrito)
+        private void GuardarCarrito(List<CarritoItem> carrito)
         {
-       
+
             HttpContext.Session.SetString("Carrito", JsonSerializer.Serialize(carrito));
         }
     }
