@@ -1,6 +1,19 @@
-﻿<form method="post">
-    <input name="Nombre" placeholder="Nombre" />
-    <input name="Correo" placeholder="Correo" />
-    <input name="Password" type="password" placeholder="Contraseña" />
+﻿@model MarketLocalShirts3.Models.Usuario
+
+<form asp-action="Registro" method="post">
+
+    <div>
+        <input asp-for="Nombre" placeholder="Nombre" />
+    </div>
+
+    <div>
+        <input asp-for="Correo" placeholder="Correo" />
+    </div>
+
+    <div>
+        <input asp-for="Contrasena" type="password" placeholder="Contraseña" />
+    </div>
+
     <button type="submit">Registrarse</button>
+
 </form>

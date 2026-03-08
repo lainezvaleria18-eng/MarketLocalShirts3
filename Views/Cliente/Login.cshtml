@@ -7,14 +7,20 @@
 
         <h4 class="text-center mb-4">Iniciar sesión</h4>
 
+        <form asp-action="Login" method="post">
 
-        <form method="post">
-            <input name="correo" class="form-control mb-3" placeholder="Correo" />
-            <input name="password" type="password" class="form-control mb-3" placeholder="Contraseña" />
+            <input name="correo" class="form-control mb-3" placeholder="Correo" required />
+
+            <input name="password" type="password" class="form-control mb-3" placeholder="Contraseña" required />
 
             <button type="submit" class="btn btn-primary w-100">
                 Ingresar
             </button>
+
         </form>
+
+
+        </form>
+
     </div>
 </div>
