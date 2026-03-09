@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<MarketLocalShirts3Context>(options =>
+
     options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=MarketLocalShirts3;Trusted_Connection=True;MultipleActiveResultSets=true")
 );
 
