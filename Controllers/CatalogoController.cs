@@ -8,7 +8,7 @@ namespace MarketLocalShirts3.Controllers
     {
         private readonly MarketLocalShirts3Context _context;
 
-        public CatalogoController(MarketLocalShirts3Context context)
+            public CatalogoController(MarketLocalShirts3Context context)
         {
             _context = context;
         }
