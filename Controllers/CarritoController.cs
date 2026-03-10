@@ -76,14 +76,17 @@ namespace MarketLocalShirts3.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public IActionResult ConfirmarPedido(string metodoPago)
+        public IActionResult PedidoConfirmado(string metodoPago)
         {
             var carrito = ObtenerCarrito();
 
             decimal total = carrito.Sum(x => x.Precio * x.Cantidad);
 
             ViewBag.Total = total;
+
+            HttpContext.Session.SetString("MetodoPago", metodoPago);
+
+            ViewBag.MetodoPago = metodoPago;
 
             return View(carrito);
         }
@@ -110,23 +113,26 @@ namespace MarketLocalShirts3.Controllers
             _context.SaveChanges();
 
             HttpContext.Session.Remove("Carrito");
+
             HttpContext.Session.Remove("MetodoPago");
 
             return RedirectToAction("Catalogo", "Cliente");
+        }
 
         private List<CarritoItem> ObtenerCarrito()
         {
             var data = HttpContext.Session.GetString("Carrito");
 
             if (string.IsNullOrEmpty(data))
-
+                return new List<CarritoItem>();
 
             return JsonSerializer.Deserialize<List<CarritoItem>>(data) ?? new List<CarritoItem>();
         }
 
-            private void GuardarCarrito (List<CarritoItem>carrito)
+        private void GuardarCarrito(List<CarritoItem> carrito)
+
         {
-            HttpContext.Session.SetString("Carrito", JsonSerializer.Serialize(carrito));
+       HttpContext.Session.SetString("Carrito", JsonSerializer.Serialize(carrito));
         }
     }
 }

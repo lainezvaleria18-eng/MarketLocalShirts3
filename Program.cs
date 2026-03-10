@@ -7,26 +7,29 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<MarketLocalShirts3Context>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSession();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Cliente/Login";
-    });
+.AddCookie(options =>
+{
+    options.LoginPath = "/Cliente/Login";
+});
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
 app.UseSession();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Cliente}/{action=Inicio}/{id?}");
+name: "default",
+pattern: "{controller=Cliente}/{action=Inicio}/{id?}");
 
 app.Run();
