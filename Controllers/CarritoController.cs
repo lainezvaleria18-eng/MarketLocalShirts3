@@ -81,13 +81,9 @@ namespace MarketLocalShirts3.Controllers
         {
             var carrito = ObtenerCarrito();
 
-        {
-            var carrito = ObtenerCarrito();
-
             decimal total = carrito.Sum(x => x.Precio * x.Cantidad);
 
             ViewBag.Total = total;
-            ViewBag.MetodoPago = HttpContext.Session.GetString("MetodoPago");
 
             return View(carrito);
         }
@@ -118,9 +114,7 @@ namespace MarketLocalShirts3.Controllers
 
             return RedirectToAction("Catalogo", "Cliente");
 
-        }
         private List<CarritoItem> ObtenerCarrito()
-
         {
             var data = HttpContext.Session.GetString("Carrito");
 
@@ -132,7 +126,6 @@ namespace MarketLocalShirts3.Controllers
 
             private void GuardarCarrito (List<CarritoItem>carrito)
         {
-
             HttpContext.Session.SetString("Carrito", JsonSerializer.Serialize(carrito));
         }
     }
