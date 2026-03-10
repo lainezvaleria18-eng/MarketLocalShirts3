@@ -4,13 +4,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<MarketLocalShirts3Context>(options =>
-
-    options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=MarketLocalShirts3;Trusted_Connection=True;MultipleActiveResultSets=true")
-);
 
 builder.Services.AddSession();
 
@@ -25,9 +21,7 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-
 app.UseSession();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
