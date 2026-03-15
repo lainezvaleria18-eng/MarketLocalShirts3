@@ -7,13 +7,40 @@
 
 @model IEnumerable<MarketLocalShirts3.Models.Producto>
 
-<h2 class="text-white mb-4">catálogo de playeras para Hombres</h2>
+<h2 class="text-white mb-4">Catálogo De Playeras Para Hombres</h2>
 
-<div class="row">
+<form method="get" asp-action="Catalogo" class="mb-4">
+
+    <div class="input-group">
+
+        <input type="text"
+               id="buscarProducto"
+               name="buscar"
+               class="form-control"
+               placeholder="Buscar producto por nombre..."
+               value="@ViewBag.Busqueda" />
+
+        <button type="submit" class="btn btn-primary">
+            Buscar
+        </button>
+
+    </div>
+
+</form>
+
+<div class="row" id="listaProductos">
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning">
+            No se encontraron productos
+        </div>
+    }
+
     @foreach (var p in Model)
     {
-        <div class="col-md-3 mb-4">
-            <div class="card bg-dark text-white h-100">
+        <div class="col-md-3 mb-4 producto-item">
+            <div class="card bg-dark text-white h-100" data-nombre="@p.Nombre.ToLower()">
                 <img src="@Url.Content("~/imagenes/" + p.Imagen)" class="card-img-top" style="height:300px;object-fit:cover;" />
                 <div class="card-body">
                     <p>Nombre: @p.Nombre</p>
@@ -40,4 +67,25 @@
         </div>
     }
 </div>
-               
+<script>
+
+    document.getElementById("buscarProducto").addEventListener("keyup", function () {
+
+        let texto = this.value.toLowerCase();
+        let productos = document.querySelectorAll(".producto-item");
+
+        productos.forEach(function (producto) {
+
+            let nombre = producto.querySelector(".card").getAttribute("data-nombre");
+
+            if (nombre.includes(texto)) {
+                producto.style.display = "block";
+            } else {
+                producto.style.display = "none";
+            }
+
+        });
+
+    });
+
+</script>

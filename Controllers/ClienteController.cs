@@ -26,16 +26,25 @@ namespace MarketLocalShirts3.Controllers
 
        
         [AllowAnonymous]
-        public async Task<IActionResult> Catalogo()
+        public async Task<IActionResult> Catalogo(string buscar)
         {
-            var productos = await _context.Productos
+            var productos = _context.Productos
                 .Include(p => p.Marca)
-                .ToListAsync();
+                .AsQueryable();
 
-            return View(productos);
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                productos = productos.Where(p => p.Nombre.Contains(buscar));
+            }
+
+            var lista = await productos.ToListAsync();
+
+            ViewBag.Busqueda = buscar;
+
+            return View(lista);
         }
 
-        
+
         [AllowAnonymous]
         public IActionResult Login(string? returnUrl = null)
         {
