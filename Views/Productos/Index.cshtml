@@ -1,5 +1,12 @@
 ﻿@model IEnumerable<MarketLocalShirts3.Models.Producto>
 
+@if (ViewBag.ProductosSinStock != null && ViewBag.ProductosSinStock.Count > 0)
+{
+    <div class="alert alert-warning">
+        Hay productos sin stock
+    </div>
+}
+
 <h2 class="text-white">Panel de administración productos</h2>
 
 <a asp-action="Create" class="btn btn-primary mb-3">Agregar producto</a>
@@ -10,9 +17,11 @@
         <tr>
             <th>Imagen</th>
             <th>Nombre</th>
+            <th>Descripción</th>
             <th>Precio</th>
             <th>Stock</th>
             <th>Marca</th>
+            <th>Acciones</th>
             <th></th>
         </tr>
     </thead>
@@ -21,13 +30,14 @@
         {
             <tr>
                 <td><img src="~/imagenes/@p.Imagen" width="80" /></td>
-                <td>@p.NombreProducto</td>
+                <td>@p.Nombre</td>
+                <td>@p.Descripcion</td>
                 <td>@p.Precio</td>
                 <td>@p.Stock</td>
-                <td>@p.IdMarcaNavigation.NombreMarca</td>
+                <td>@p.Marca?.Nombre</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@p.IdProducto" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Delete" asp-route-id="@p.IdProducto" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@p.Id" class="btn btn-danger btn-sm">Eliminar</a>
                 </td>
             </tr>
         }

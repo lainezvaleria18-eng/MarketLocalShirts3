@@ -5,14 +5,14 @@
 <h4>¿Estás seguro de eliminar este producto?</h4>
 
 <div class="mb-3">
-    <strong>Nombre:</strong> @Model.NombreProducto <br />
+    <strong>Nombre:</strong> @Model.Nombre <br />
     <strong>Precio:</strong> @Model.Precio <br />
     <strong>Stock:</strong> @Model.Stock <br />
-    <strong>Marca:</strong> @Model.IdMarcaNavigation.NombreMarca
+    <strong>Marca:</strong> @Model.Marca?.Nombre
 </div>
 
 <form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="IdProducto" />
+    <input type="hidden" asp-for="Id" />
     <button type="submit" class="btn btn-danger">Eliminar</button>
     <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
 </form>

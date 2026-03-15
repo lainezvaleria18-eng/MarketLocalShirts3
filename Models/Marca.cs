@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace MarketLocalShirts3.Models;
-
-public partial class Marca
+namespace MarketLocalShirts3.Models
 {
-    public int IdMarca { get; set; }
+    public class Marca
+    {
+        public int Id { get; set; }
 
-    public string NombreMarca { get; set; } = null!;
+        public string Nombre { get; set; } = "";
 
-    public virtual ICollection<Producto> Productos { get; set; } = new List<Producto>();
+        public ICollection<Producto> Productos { get; set; } = new List<Producto>();
+    }
 }

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MarketLocalShirts3.Models;
-
-public partial class Rol
+﻿namespace MarketLocalShirts3.Models
 {
-    public int IdRol { get; set; }
+    public class Rol
+    {
+        public int Id { get; set; }
 
-    public string NombreRol { get; set; } = null!;
-
-    public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
+        public string Nombre { get; set; } = "";
+    }
 }

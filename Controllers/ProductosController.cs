@@ -19,15 +19,19 @@ namespace MarketLocalShirts3.Controllers
         public async Task<IActionResult> Index()
         {
             var productos = await _context.Productos
-                .Include(p => p.IdMarcaNavigation)
+                .Include(p => p.Marca)
                 .ToListAsync();
+
+            ViewBag.ProductosSinStock = _context.Productos
+             .Where(p => p.Stock == 0)
+             .ToList();
 
             return View(productos);
         }
 
         public IActionResult Create()
         {
-            ViewBag.IdMarca = new SelectList(_context.Marcas, "IdMarca", "NombreMarca");
+            ViewBag.MarcaId = new SelectList(_context.Marcas, "Id", "Nombre");
             return View();
         }
 
@@ -59,14 +63,14 @@ namespace MarketLocalShirts3.Controllers
                 return NotFound();
             }
 
-            ViewBag.IdMarca = new SelectList(_context.Marcas, "IdMarca", "NombreMarca", producto.IdMarca);
+            ViewBag.MarcaId = new SelectList(_context.Marcas, "Id", "Nombre", producto.MarcaId);
             return View(producto);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, Producto producto, IFormFile archivoImagen)
         {
-            if (id != producto.IdProducto)
+            if (id != producto.Id)
             {
                 return NotFound();
             }
@@ -88,10 +92,11 @@ namespace MarketLocalShirts3.Controllers
                 productoDb.Imagen = nombreArchivo;
             }
 
-            productoDb.NombreProducto = producto.NombreProducto;
+            productoDb.Nombre = producto.Nombre;
+            productoDb.Descripcion = producto.Descripcion;
             productoDb.Precio = producto.Precio;
             productoDb.Stock = producto.Stock;
-            productoDb.IdMarca = producto.IdMarca;
+            productoDb.MarcaId = producto.MarcaId;
 
             await _context.SaveChangesAsync();
 
@@ -101,8 +106,8 @@ namespace MarketLocalShirts3.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var producto = await _context.Productos
-                .Include(p => p.IdMarcaNavigation)
-                .FirstOrDefaultAsync(p => p.IdProducto == id);
+                .Include(p => p.Marca)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (producto == null)
             {

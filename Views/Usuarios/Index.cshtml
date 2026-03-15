@@ -8,9 +8,16 @@
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Correo</th>
+            <th>Email</th>
             <th>Rol</th>
+            <th>Activo</th>
+            <th>Fecha Registro</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Ciudad</th>
             <th>Acciones</th>
+
+           
         </tr>
     </thead>
     <tbody>
@@ -18,19 +25,34 @@
         {
             <tr>
                 <td>@u.Nombre</td>
-                <td>@u.Correo</td>
-                <td>@u.IdRolNavigation.NombreRol</td>
+                <td>@u.Email</td>
+                <td>@u.Rol?.Nombre</td>
+                <td>@(u.EsActivo ? "Sí" : "No")</td>
+                <td>@u.FechaRegistro</td>
+
+                <td>@u.Cliente?.Direccion</td>
+                <td>@u.Cliente?.Telefono</td>
+                <td>@u.Cliente?.Ciudad</td>
+
                 <td>
                     <a asp-action="Edit"
-                       asp-route-id="@u.IdUsuario"
+                       asp-route-id="@u.Id"
                        class="btn btn-warning btn-sm">
                         Editar
                     </a>
 
+                    <a asp-action="Bloquear"
+                       asp-route-id="@u.Id"
+                       class="btn btn-secondary btn-sm">
+                        Bloquear
+                    </a>
+
                     <form asp-action="Delete"
-                          asp-route-id="@u.IdUsuario"
+                          asp-route-id="@u.Id"
                           method="post"
                           style="display:inline">
+
+
                         <button class="btn btn-danger btn-sm"
                                 onclick="return confirm('¿Eliminar el usuario?')">
                             Eliminar usuario 

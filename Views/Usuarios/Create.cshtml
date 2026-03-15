@@ -8,14 +8,29 @@
             <label>Nombre:</label>
             <input asp-for="Nombre" class="form-control mb-2" />
 
-            <label>Correo:</label>
-            <input asp-for="Correo" class="form-control mb-2" />
+            <label>Email:</label>
+            <input asp-for="Email" class="form-control mb-2" />
 
             <label>Contraseña:</label>
-            <input asp-for="Contrasena" type="password" class="form-control mb-2" />
+            <input asp-for="PasswordHash" type="password" class="form-control mb-2" />
+
+            <div class="form-group">
+                <label>Dirección</label>
+                <input name="direccion" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono</label>
+                <input name="telefono" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Ciudad</label>
+                <input name="ciudad" class="form-control" />
+            </div>
 
             <label>Rol:</label>
-            <select asp-for="IdRol" asp-items="ViewBag.IdRol" class="form-control mb-3"></select>
+            <select asp-for="RolId" asp-items="ViewBag.RolId" class="form-control mb-3"></select>
 
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Guardar</button>
