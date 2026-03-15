@@ -23,29 +23,36 @@ namespace MarketLocalShirts3.Controllers
         public IActionResult Agregar(int id)
         {
             var producto = _context.Productos
-                .Where(p => p.IdProducto == id)
+                .Where(p => p.Id == id)
                 .Select(p => new
                 {
-                    p.IdProducto,
-                    Nombre = p.NombreProducto,
-                    Marca = p.IdMarcaNavigation.NombreMarca,
+                    p.Id,
+                    Nombre = p.Nombre,
+                    Marca = p.Marca.Nombre,
                     p.Precio,
                     p.Imagen
                 })
                 .FirstOrDefault();
+            var productoDB = _context.Productos.FirstOrDefault(p => p.Id == id);
+
+            if (productoDB.Stock == 0)
+            {
+                TempData["SinStock"] = "Producto no disponible";
+                return RedirectToAction("Catalogo", "Cliente");
+            }
 
             if (producto == null)
                 return RedirectToAction("Catalogo", "Cliente");
 
             var carrito = ObtenerCarrito();
 
-            var item = carrito.FirstOrDefault(c => c.IdProducto == id);
+            var item = carrito.FirstOrDefault(c => c.Id == id);
 
             if (item == null)
             {
                 carrito.Add(new CarritoItem
                 {
-                    IdProducto = producto.IdProducto,
+                    Id = producto.Id,
                     Nombre = producto.Nombre,
                     Marca = producto.Marca,
                     Precio = producto.Precio,
@@ -65,7 +72,7 @@ namespace MarketLocalShirts3.Controllers
         public IActionResult Eliminar(int id)
         {
             var carrito = ObtenerCarrito();
-            var item = carrito.FirstOrDefault(c => c.IdProducto == id);
+            var item = carrito.FirstOrDefault(c => c.Id == id);
 
             if (item != null)
             {
@@ -76,6 +83,7 @@ namespace MarketLocalShirts3.Controllers
             return RedirectToAction("Index");
         }
 
+       
         public IActionResult PedidoConfirmado(string metodoPago)
         {
             var carrito = ObtenerCarrito();
@@ -88,6 +96,33 @@ namespace MarketLocalShirts3.Controllers
 
             ViewBag.MetodoPago = metodoPago;
 
+            var usuarioIdSession = HttpContext.Session.GetInt32("UsuarioId");
+
+            if (usuarioIdSession == null)
+            {
+                return RedirectToAction("Login", "Cliente",
+                    new { returnUrl = "/Carrito/Index" });
+            }
+
+            int usuarioId = usuarioIdSession.Value;
+
+            var cliente = _context.Clientes
+                .FirstOrDefault(c => c.UsuarioId == usuarioId);
+
+            var usuario = _context.Usuarios
+                .FirstOrDefault(u => u.Id == usuarioId);
+
+            if (cliente != null)
+            {
+                ViewBag.Direccion = cliente.Direccion;
+                ViewBag.Telefono = cliente.Telefono;
+            }
+
+            if (usuario != null)
+            {
+                ViewBag.Nombre = usuario.Nombre;
+            }
+
             return View(carrito);
         }
 
@@ -99,7 +134,7 @@ namespace MarketLocalShirts3.Controllers
             foreach (var item in carrito)
             {
                 var producto = _context.Productos
-                    .FirstOrDefault(p => p.IdProducto == item.IdProducto);
+                    .FirstOrDefault(p => p.Id == item.Id);
 
                 if (producto != null)
                 {
@@ -132,7 +167,7 @@ namespace MarketLocalShirts3.Controllers
         private void GuardarCarrito(List<CarritoItem> carrito)
 
         {
-       HttpContext.Session.SetString("Carrito", JsonSerializer.Serialize(carrito));
+            HttpContext.Session.SetString("Carrito", JsonSerializer.Serialize(carrito));
         }
     }
 }

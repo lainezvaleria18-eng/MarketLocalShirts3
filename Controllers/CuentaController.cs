@@ -24,7 +24,7 @@ namespace MarketLocalShirts3.Controllers
         public async Task<IActionResult> Login(string correo, string password)
         {
             var usuario = _context.Usuarios
-                .FirstOrDefault(u => u.Correo == correo && u.Contrasena == password);
+                .FirstOrDefault(u => u.Email == correo && u.PasswordHash == password);
 
             if (usuario == null)
                 return View();

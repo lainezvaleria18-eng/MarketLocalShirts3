@@ -4,6 +4,7 @@ using MarketLocalShirts3.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarketLocalShirts3.Migrations
 {
     [DbContext(typeof(MarketLocalShirts3Context))]
-    partial class MarketLocalShirts3ContextModelSnapshot : ModelSnapshot
+    [Migration("20260314181052_ActualizarCliente")]
+    partial class ActualizarCliente
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

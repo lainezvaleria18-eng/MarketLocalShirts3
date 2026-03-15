@@ -13,12 +13,12 @@
         @foreach (var p in Model)
         {
             <tr>
-                <td>@p.NombreProducto</td>
-                <td>@p.IdMarcaNavigation.NombreMarca</td>
+                <td>@p.Nombre</td>
+                <td>@p.Marca?.Nombre</td>
                 <td>$@p.Precio</td>
                 <td>
                     <a asp-action="Eliminar"
-                       asp-route-id="@p.IdProducto"
+                       asp-route-id="@p.Id"
                        class="btn btn-danger">
                         Eliminar
                     </a>

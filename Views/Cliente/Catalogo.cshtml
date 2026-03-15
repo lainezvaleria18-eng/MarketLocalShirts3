@@ -1,4 +1,11 @@
-﻿@model IEnumerable<MarketLocalShirts3.Models.Producto>
+﻿@if (TempData["SinStock"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["SinStock"]
+    </div>
+}
+
+@model IEnumerable<MarketLocalShirts3.Models.Producto>
 
 <h2 class="text-white mb-4">catálogo de playeras para Hombres</h2>
 
@@ -9,19 +16,28 @@
             <div class="card bg-dark text-white h-100">
                 <img src="@Url.Content("~/imagenes/" + p.Imagen)" class="card-img-top" style="height:300px;object-fit:cover;" />
                 <div class="card-body">
-                    <p>Nombre: @p.NombreProducto</p>
-                    <p>Marca: @p.IdMarcaNavigation.NombreMarca</p>
+                    <p>Nombre: @p.Nombre</p>
+                    <p>Marca: @p.Marca?.Nombre</p>
+                    <p>Descripción: @p.Descripcion</p>
                     <p>Precio: $@p.Precio</p>
                 </div>
                 <div class="card-footer bg-dark border-0">
-                    <a asp-controller="Carrito"
-                       asp-action="Agregar"
-                       asp-route-id="@p.IdProducto"
-                       class="btn btn-primary w-100">
-                        Agregar al carrito
-                    </a>
+                    @if (p.Stock == 0)
+                    {
+                        <span class="badge bg-danger">Producto agotado</span>
+                    }
+                    else
+                    {
+                        <a asp-controller="Carrito"
+                           asp-action="Agregar"
+                           asp-route-id="@p.Id"
+                           class="btn btn-primary">
+                            Agregar al carrito
+                        </a>
+                    }
                 </div>
             </div>
         </div>
     }
 </div>
+               

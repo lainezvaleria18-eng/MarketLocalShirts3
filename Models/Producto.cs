@@ -1,14 +1,22 @@
-namespace MarketLocalShirts3.Models
+﻿namespace MarketLocalShirts3.Models
 {
-    public partial class Producto
+    public class Producto
     {
-        public int IdProducto { get; set; }
-        public string NombreProducto { get; set; } = string.Empty;
+        public int Id { get; set; }
+
+        public string Nombre { get; set; } = "";
+
+        public string Descripcion { get; set; } = "";
+
         public decimal Precio { get; set; }
+
         public int Stock { get; set; }
 
-        public virtual Marca IdMarcaNavigation { get; set; } = null!;
+        public string Imagen { get; set; } = "";
 
-        public virtual ICollection<DetallePedido> DetallePedidos { get; set; } = new List<DetallePedido>();
+
+        public int MarcaId { get; set; }
+
+        public Marca? Marca { get; set; }
     }
 }

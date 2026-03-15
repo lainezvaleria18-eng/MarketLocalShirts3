@@ -71,7 +71,12 @@
 
             <div class="form-row">
                 <label>Nombre de la playera:</label>
-                <input asp-for="NombreProducto" />
+                <input asp-for="Nombre" />
+            </div>
+
+            <div class="form-row">
+                <label>Descripción:</label>
+                <input asp-for="Descripcion" />
             </div>
 
             <div class="form-row">
@@ -91,7 +96,7 @@
 
             <div class="form-row">
                 <label>Categoría / Marca:</label>
-                <select asp-for="IdMarca" asp-items="ViewBag.IdMarca"></select>
+                <select asp-for="MarcaId" asp-items="ViewBag.MarcaId"></select>
             </div>
 
             <div class="form-buttons">

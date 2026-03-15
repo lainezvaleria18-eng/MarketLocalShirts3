@@ -1,20 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace MarketLocalShirts3.Models;
-
-public partial class Usuario
+namespace MarketLocalShirts3.Models
 {
-    public int IdUsuario { get; set; }
+    public class Usuario
+    {
+        [Key]
+        public int Id { get; set; }
 
-    public string Nombre { get; set; } = null!;
+        public string Nombre { get; set; } = "";
 
-    public string Correo { get; set; } = null!;
+        public string Email { get; set; } = "";
 
-    public string Contrasena { get; set; } = null!;
+        public string PasswordHash { get; set; } = "";
 
-    public int IdRol { get; set; }
+        public int RolId { get; set; }
 
-    public virtual Rol IdRolNavigation { get; set; } = null!;
+        public bool EsActivo { get; set; }
+
+        public DateTime FechaRegistro { get; set; }
+
+        public Rol? Rol { get; set; }
+
+        public Cliente? Cliente { get; set; }
+
+    }
 
 }

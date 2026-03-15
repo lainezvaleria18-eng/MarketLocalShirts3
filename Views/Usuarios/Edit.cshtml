@@ -8,19 +8,19 @@
         </div>
 
         <form asp-action="Edit" method="post">
-            <input type="hidden" asp-for="IdUsuario" />
+            <input type="hidden" asp-for="Id" />
 
             <label class="text-white mt-3">Nombre:</label>
             <input asp-for="Nombre" class="form-control form-control-sm" />
 
-            <label class="text-white mt-2">Correo:</label>
-            <input asp-for="Correo" class="form-control form-control-sm" />
+            <label class="text-white mt-2">Email:</label>
+            <input asp-for="Email" class="form-control form-control-sm" />
 
             <label class="text-white mt-2">Contraseña:</label>
-            <input asp-for="Contrasena" class="form-control form-control-sm" />
+            <input asp-for="PasswordHash" class="form-control form-control-sm" />
 
             <label class="text-white mt-2">Rol ( Admin ):</label>
-            <select asp-for="IdRol" asp-items="ViewBag.IdRol" class="form-control form-control-sm"></select>
+            <select asp-for="RolId" asp-items="ViewBag.RolId" class="form-control form-control-sm"></select>
 
             <div style="display:flex;justify-content:space-between;margin-top:20px">
                 <button type="submit" class="btn btn-primary btn-sm">Guardar</button>

@@ -18,18 +18,41 @@
             </div>
 
             <div class="mb-3">
-                <input asp-for="Correo"
+                <input asp-for="Email"
                        class="form-control"
-                       placeholder="Correo"
+                       placeholder="Email"
                        required />
             </div>
 
             <div class="mb-3">
-                <input asp-for="Contrasena"
+                <input asp-for="PasswordHash"
                        type="password"
                        class="form-control"
                        placeholder="Contraseña"
                        required />
+                       </div>
+             <div>
+                <div class="mb-3">
+                    <input name="Direccion"
+                           class="form-control"
+                           placeholder="Dirección"
+                           required />
+                </div>
+
+                <div class="mb-3">
+                    <input name="Telefono"
+                           class="form-control"
+                           placeholder="Teléfono"
+                           required />
+                </div>
+
+                <div class="mb-3">
+                    <input name="Ciudad"
+                           class="form-control"
+                           placeholder="Ciudad"
+                           required />
+                </div>
+
             </div>
 
             <button type="submit" class="btn btn-primary w-100">

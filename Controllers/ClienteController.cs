@@ -29,7 +29,7 @@ namespace MarketLocalShirts3.Controllers
         public async Task<IActionResult> Catalogo()
         {
             var productos = await _context.Productos
-                .Include(p => p.IdMarcaNavigation)
+                .Include(p => p.Marca)
                 .ToListAsync();
 
             return View(productos);
@@ -48,19 +48,21 @@ namespace MarketLocalShirts3.Controllers
         public async Task<IActionResult> Login(string correo, string password, string? returnUrl = null)
         {
             var usuario = await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.Correo == correo && u.Contrasena == password);
+                .FirstOrDefaultAsync(u => u.Email == correo && u.PasswordHash == password);
 
             if (usuario == null)
             {
-                ViewBag.Error = "Correo o contraseña incorrectos";
+                ViewBag.Error = "Email o contraseña incorrectos";
                 return View();
             }
+
+            HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
 
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, usuario.Nombre),
-                new Claim(ClaimTypes.Email, usuario.Correo),
-                new Claim(ClaimTypes.Role, usuario.IdRol.ToString())
+                new Claim(ClaimTypes.Email, usuario.Email),
+                new Claim(ClaimTypes.Role, usuario.RolId.ToString())
             };
 
             var identity = new ClaimsIdentity(
@@ -99,11 +101,24 @@ namespace MarketLocalShirts3.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Registro(Usuario usuario)
+        public async Task<IActionResult> Registro(Usuario usuario, string Direccion, string Telefono, string Ciudad)
         {
-            usuario.IdRol = 2;
+            usuario.RolId = 2;
+
+            usuario.FechaRegistro = DateTime.Now;
+            usuario.EsActivo = true;
 
             _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+            var cliente = new Cliente
+            {
+                UsuarioId = usuario.Id,
+                Direccion = Direccion,
+                Telefono = Telefono,
+                Ciudad = Ciudad
+            };
+
+            _context.Clientes.Add(cliente);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Login");

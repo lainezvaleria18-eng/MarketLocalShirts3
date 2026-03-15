@@ -17,7 +17,8 @@ namespace MarketLocalShirts3.Controllers
         public async Task<IActionResult> Index()
         {
             var usuarios = await _context.Usuarios
-                .Include(u => u.IdRolNavigation)
+                .Include(u => u.Cliente)
+                .Include(u => u.Rol)
                 .ToListAsync();
 
             return View(usuarios);
@@ -25,16 +26,38 @@ namespace MarketLocalShirts3.Controllers
 
         public IActionResult Create()
         {
-            ViewBag.IdRol = new SelectList(_context.Rols, "IdRol", "NombreRol");
+            ViewBag.RolId = new SelectList(_context.Roles, "Id", "Nombre");
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Usuario usuario)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Usuario usuario, string direccion, string telefono, string ciudad)
         {
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                usuario.FechaRegistro = DateTime.Now;
+                usuario.EsActivo = true;
+
+                _context.Usuarios.Add(usuario);
+                await _context.SaveChangesAsync();
+
+                Cliente cliente = new Cliente
+                {
+                    UsuarioId = usuario.Id,
+                    Direccion = direccion,
+                    Telefono = telefono,
+                    Ciudad = ciudad
+                };
+
+                _context.Clientes.Add(cliente);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewBag.RolId = new SelectList(_context.Roles, "Id", "Nombre", usuario.RolId);
+            return View(usuario);
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -42,36 +65,59 @@ namespace MarketLocalShirts3.Controllers
             var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario == null) return NotFound();
 
-            ViewBag.IdRol = new SelectList(_context.Rols, "IdRol", "NombreRol", usuario.IdRol);
+            ViewBag.RolId = new SelectList(_context.Roles, "Id", "Nombre", usuario.RolId);
             return View(usuario);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Usuario usuario)
         {
-            var usuarioDb = await _context.Usuarios.FindAsync(usuario.IdUsuario);
+            var usuarioDb = await _context.Usuarios.FindAsync(usuario.Id);
             if (usuarioDb == null) return NotFound();
 
             usuarioDb.Nombre = usuario.Nombre;
-            usuarioDb.Correo = usuario.Correo;
-            usuarioDb.Contrasena = usuario.Contrasena;
-            usuarioDb.IdRol = usuario.IdRol;
+            usuarioDb.Email = usuario.Email;
+            usuarioDb.PasswordHash = usuario.PasswordHash;
+            usuarioDb.RolId = usuario.RolId;
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
+
             if (usuario != null)
             {
+                var cliente = await _context.Clientes
+                    .FirstOrDefaultAsync(c => c.UsuarioId == id);
+
+                if (cliente != null)
+                {
+                    _context.Clientes.Remove(cliente);
+                }
+
                 _context.Usuarios.Remove(usuario);
+
                 await _context.SaveChangesAsync();
             }
-            
-            return RedirectToAction("Index");
+
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> Bloquear(int id)
+        {
+            var usuario = await _context.Usuarios.FindAsync(id);
+
+            if (usuario != null)
+            {
+                usuario.EsActivo = !usuario.EsActivo;
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
