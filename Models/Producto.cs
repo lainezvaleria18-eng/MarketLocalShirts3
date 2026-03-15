@@ -1,5 +1,3 @@
-﻿using System.Collections.Generic;
-
 namespace MarketLocalShirts3.Models
 {
     public partial class Producto
@@ -8,8 +6,6 @@ namespace MarketLocalShirts3.Models
         public string NombreProducto { get; set; } = string.Empty;
         public decimal Precio { get; set; }
         public int Stock { get; set; }
-        public string Imagen { get; set; } = string.Empty;
-        public int IdMarca { get; set; }
 
         public virtual Marca IdMarcaNavigation { get; set; } = null!;
 

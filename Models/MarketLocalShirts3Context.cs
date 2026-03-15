@@ -103,10 +103,4 @@ namespace MarketLocalShirts3.Models
                     .WithMany(p => p.DetallePedidos)
                     .HasForeignKey(d => d.IdPedido);
 
-                entity.HasOne(d => d.IdProductoNavigation)
-                    .WithMany(p => p.DetallePedidos)
-                    .HasForeignKey(d => d.IdProducto);
-            });
-        }
-    }
 }
