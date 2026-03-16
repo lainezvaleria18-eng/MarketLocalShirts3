@@ -142,5 +142,33 @@ namespace MarketLocalShirts3.Controllers
 
             return RedirectToAction("Login");
         }
+        [Authorize]
+        public async Task<IActionResult> MisPedidos()
+        {
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+
+            if (usuarioId == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var pedidos = await _context.Pedidos
+                .Where(p => p.UsuarioId == usuarioId)
+                .OrderByDescending(p => p.FechaPedido)
+                .ToListAsync();
+
+            return View(pedidos);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DetallePedido(int id)
+        {
+            var detalles = await _context.PedidosDetalles
+                .Include(d => d.Producto)
+                .Where(d => d.PedidoId == id)
+                .ToListAsync();
+
+            return View(detalles);
+        }
     }
 }

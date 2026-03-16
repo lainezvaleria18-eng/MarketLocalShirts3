@@ -1,0 +1,32 @@
+﻿@model IEnumerable<MarketLocalShirts3.Models.Pedido>
+
+<h2 class="text-white mb-4">Mis pedidos</h2>
+
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Detalle</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Id</td>
+                <td>@p.FechaPedido.ToShortDateString()</td>
+                <td>@p.Estado</td>
+                <td>
+                    <a asp-action="DetallePedido"
+                       asp-route-id="@p.Id"
+                       class="btn btn-primary">
+                        Ver detalle
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

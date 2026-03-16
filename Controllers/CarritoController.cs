@@ -131,6 +131,37 @@ namespace MarketLocalShirts3.Controllers
         {
             var carrito = ObtenerCarrito();
 
+            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+
+            if (usuarioId != null)
+            {
+                var pedido = new Pedido
+                {
+                    UsuarioId = usuarioId.Value,
+                    FechaPedido = DateTime.Now,
+                    Estado = "Pendiente"
+                };
+
+                _context.Pedidos.Add(pedido);
+                _context.SaveChanges();
+
+                foreach (var item in carrito)
+                {
+                    var detalle = new DetallePedido
+                    {
+                        PedidoId = pedido.Id,
+                        ProductoId = item.Id,
+                        Cantidad = item.Cantidad,
+                        Precio = Convert.ToDecimal(item.Precio),
+                        DescripcionProducto = item.Nombre
+                    };
+
+                    _context.PedidosDetalles.Add(detalle);
+                }
+
+                _context.SaveChanges();
+            }
+
             foreach (var item in carrito)
             {
                 var producto = _context.Productos
