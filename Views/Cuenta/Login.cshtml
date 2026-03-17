@@ -1,5 +1,42 @@
-﻿<form method="post">
-    <input name="correo" placeholder="Email" />
-    <input name="password" type="password" placeholder="Contraseña" />
-    <button type="submit">Iniciar sesión</button>
-</form>
+﻿@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<div class="d-flex justify-content-center align-items-center" style="height:70vh;">
+
+    <div class="card bg-dark text-white p-4" style="width:350px;">
+
+        <h3 class="text-center mb-4">Iniciar sesión</h3>
+
+        <form asp-controller="Cuenta" asp-action="Login" method="post">
+
+            <div class="mb-3">
+                <input type="email" name="Email" class="form-control" placeholder="Email" required />
+            </div>
+
+            <div class="mb-3">
+                <input type="password" name="Password" class="form-control" placeholder="Contraseña" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Ingresar
+            </button>
+
+        </form>
+
+        <div class="text-center mt-3">
+            <a asp-controller="Cuenta" asp-action="RecuperarPassword">
+                ¿Olvidaste tu contraseña?
+            </a>
+        </div>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="text-danger text-center mt-2">
+                @ViewBag.Error
+            </div>
+        }
+
+    </div>
+
+</div>
