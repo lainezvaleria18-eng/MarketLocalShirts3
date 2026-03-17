@@ -22,7 +22,6 @@ namespace MarketLocalShirts3.Models
         public Rol? Rol { get; set; }
 
         public Cliente? Cliente { get; set; }
-
     }
 
 }
