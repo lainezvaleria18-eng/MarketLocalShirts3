@@ -24,7 +24,7 @@ namespace MarketLocalShirts3.Controllers
             return View();
         }
 
-       
+       //Buscar por nombre y marca
         [AllowAnonymous]
         public async Task<IActionResult> Catalogo(string buscar, int? marcaId)
         {
