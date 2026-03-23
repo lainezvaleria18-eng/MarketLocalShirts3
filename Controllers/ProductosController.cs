@@ -16,17 +16,18 @@ namespace MarketLocalShirts3.Controllers
             _env = env;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar)
         {
-            var productos = await _context.Productos
-                .Include(p => p.Marca)
-                .ToListAsync();
+            var productos = _context.Productos.AsQueryable();
 
-            ViewBag.ProductosSinStock = _context.Productos
-             .Where(p => p.Stock == 0)
-             .ToList();
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                productos = productos.Where(p =>
+                    p.Nombre.Contains(buscar) ||
+                    p.Descripcion.Contains(buscar));
+            }
 
-            return View(productos);
+            return View(await productos.ToListAsync());
         }
 
         public IActionResult Create()
