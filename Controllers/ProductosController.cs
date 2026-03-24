@@ -18,7 +18,9 @@ namespace MarketLocalShirts3.Controllers
 
         public async Task<IActionResult> Index(string buscar)
         {
-            var productos = _context.Productos.AsQueryable();
+            var productos = _context.Productos
+                .Include(p=> p.Marca)
+                .AsQueryable();
 
             if (!string.IsNullOrEmpty(buscar))
             {
