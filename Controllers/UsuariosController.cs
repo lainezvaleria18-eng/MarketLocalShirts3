@@ -14,14 +14,21 @@ namespace MarketLocalShirts3.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar)
         {
-            var usuarios = await _context.Usuarios
-                .Include(u => u.Cliente)
-                .Include(u => u.Rol)
-                .ToListAsync();
+            var usuarios = _context.Usuarios
+                   .Include(u => u.Rol)
+                   .Include(u => u.Cliente)
+                   .AsQueryable();
 
-            return View(usuarios);
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                usuarios = usuarios.Where(u =>
+                    u.Nombre.Contains(buscar) ||
+                    u.Email.Contains(buscar));
+            }
+
+            return View(await usuarios.ToListAsync());
         }
 
         public IActionResult Create()

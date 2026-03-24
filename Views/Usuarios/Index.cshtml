@@ -4,6 +4,24 @@
 
 <a asp-action="Create" class="btn btn-primary mb-3">Agregar usuario</a>
 
+<form asp-action="Index"
+      method="get"
+      class="d-flex">
+
+    <input type="text"
+           name="buscar"
+           class="form-control me-2"
+           placeholder="Buscar usuario..."
+           style="width: 450px;"
+           value="@Context.Request.Query["buscar"]" />
+
+    <button type="submit"
+            class="btn btn-success">
+        Buscar
+    </button>
+
+</form>
+
 <table class="table table-dark table-bordered">
     <thead>
         <tr>
