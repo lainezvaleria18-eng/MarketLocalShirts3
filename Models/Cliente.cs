@@ -6,19 +6,19 @@ namespace MarketLocalShirts3.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El usuario es obligatorio")]
         public int UsuarioId { get; set; }
 
-        [Required]
-        [StringLength(200)]
+        [Required(ErrorMessage = "La dirección es obligatoria")]
+        [StringLength(200, ErrorMessage = "La dirección no puede superar los 200 caracteres")]
         public string Direccion { get; set; } = "";
 
-        [Required]
-        [StringLength(20)]
+        [Required(ErrorMessage = "El teléfono es obligatorio")]
+        [StringLength(20, ErrorMessage = "El teléfono no puede superar los 20 caracteres")]
         public string Telefono { get; set; } = "";
 
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "La ciudad es obligatoria")]
+        [StringLength(100, ErrorMessage = "La ciudad no puede superar los 100 caracteres")]
         public string Ciudad { get; set; } = "";
 
         public Usuario? Usuario { get; set; }

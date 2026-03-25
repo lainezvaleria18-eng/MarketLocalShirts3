@@ -6,13 +6,14 @@ namespace MarketLocalShirts3.Models
     {
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El usuario es obligatorio")]
         public int UsuarioId { get; set; }
 
+        [Required(ErrorMessage = "La fecha del pedido es obligatoria")]
         public DateTime FechaPedido { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [Required(ErrorMessage = "El estado del pedido es obligatorio")]
+        [StringLength(50, ErrorMessage = "El estado no puede superar los 50 caracteres")]
         public string Estado { get; set; } = "";
 
         public Usuario? Usuario { get; set; }

@@ -4,7 +4,15 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddMvcOptions(options =>
+    {
+        options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+            _ => "Este campo es obligatorio");
+
+        options.ModelBindingMessageProvider.SetAttemptedValueIsInvalidAccessor(
+            (value, fieldName) => $"El valor '{value}' no es válido");
+    });
 
 builder.Services.AddDbContext<MarketLocalShirts3Context>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

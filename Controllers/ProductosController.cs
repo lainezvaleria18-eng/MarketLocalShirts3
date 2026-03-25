@@ -41,6 +41,12 @@ namespace MarketLocalShirts3.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Producto producto, IFormFile archivoImagen)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.MarcaId = new SelectList(_context.Marcas, "Id", "Nombre", producto.MarcaId);
+                return View(producto);
+            }
+
             if (archivoImagen != null)
             {
                 var nombreArchivo = Guid.NewGuid() + Path.GetExtension(archivoImagen.FileName);

@@ -7,8 +7,8 @@ namespace MarketLocalShirts3.Models
     {
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "El nombre de la marca es obligatorio")]
+        [StringLength(100, ErrorMessage = "El nombre no puede superar los 100 caracteres")]
         public string Nombre { get; set; } = "";
 
         public ICollection<Producto> Productos { get; set; } = new List<Producto>();
