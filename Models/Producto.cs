@@ -31,3 +31,4 @@ namespace MarketLocalShirts3.Models
     }
 
 }
+//anotaciones de nuestro producto  que tenemos  que tener cuidado.
