@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MarketLocalShirts3.Models;
+using MarketLocalShirts3.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MarketLocalShirts3.Models;
 
 namespace MarketLocalShirts3.Controllers
 {
@@ -39,22 +40,29 @@ namespace MarketLocalShirts3.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Usuario usuario, string direccion, string telefono, string ciudad)
+        public async Task<IActionResult> Create(UsuarioViewModel model)
         {
             if (ModelState.IsValid)
             {
-                usuario.FechaRegistro = DateTime.Now;
-                usuario.EsActivo = true;
+                var usuario = new Usuario
+                {
+                    Nombre = model.Nombre,
+                    Email = model.Email,
+                    PasswordHash = model.PasswordHash,
+                    RolId = model.RolId,
+                    FechaRegistro = DateTime.Now,
+                    EsActivo = true
+                };
 
                 _context.Usuarios.Add(usuario);
                 await _context.SaveChangesAsync();
 
-                Cliente cliente = new Cliente
+                var cliente = new Cliente
                 {
                     UsuarioId = usuario.Id,
-                    Direccion = direccion,
-                    Telefono = telefono,
-                    Ciudad = ciudad
+                    Direccion = model.Direccion,
+                    Telefono = model.Telefono,
+                    Ciudad = model.Ciudad
                 };
 
                 _context.Clientes.Add(cliente);
@@ -63,8 +71,8 @@ namespace MarketLocalShirts3.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.RolId = new SelectList(_context.Roles, "Id", "Nombre", usuario.RolId);
-            return View(usuario);
+            ViewBag.RolId = new SelectList(_context.Roles, "Id", "Nombre", model.RolId);
+            return View(model);
         }
 
         public async Task<IActionResult> Edit(int id)
