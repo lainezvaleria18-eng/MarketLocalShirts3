@@ -2,27 +2,29 @@
     ViewData["Title"] = "Inicio";
 }
 
-<div class="container mt-5">
+<div class="container mt-5 py-5">
     <div class="row align-items-center">
 
-        <div class="col-md-6 text-white">
-            <h1 class="fw-bold">MarketLocal Shirts</h1>
-            <p class="fs-5">Tienda en línea de playeras para hombre</p>
+        <div class="col-md-6 text-white text-center text-md-start">
+            <h1 class="display-4 fw-bold mb-3">MarketLocal Shirts</h1>
+            <p class="fs-4 opacity-75 mb-4">Tienda en línea de playeras para hombre</p>
 
-            <a asp-controller="Cliente" asp-action="Catalogo" class="btn btn-primary mt-3">
+            <a asp-controller="Cliente" asp-action="Catalogo"
+               class="btn btn-lg px-5 shadow-lg"
+               style="background-color: #00d4ff; color: #000; font-weight: bold; border-radius: 30px; border: none;">
                 Ver catálogo
             </a>
 
-            <p class="mt-4 fst-italic">
+            <p class="mt-5 fst-italic opacity-50">
                 Explora nuestro catálogo y encuentra tu estilo ideal.
             </p>
         </div>
 
-        <div class="col-md-6 d-flex align-items-center justify-content-center p-5">
-            <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 80%;">
-                <img src="~/imagenes/playera.adidas.jpg"
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="position-relative">
+                <img src="~/imagenes/playera.adidass.png"
                      class="img-fluid"
-                     style="max-height: 400px; object-fit: contain; padding: 20px; background-color: #f8f9fa;"
+                     style="max-height: 500px; object-fit: contain; filter: drop-shadow(0 15px 35px rgba(0,212,255,0.2));"
                      alt="Playera de hombre">
             </div>
         </div>
@@ -31,5 +33,5 @@
 </div>
 
 <script>
-    //Josue
+    // Josue
 </script>
