@@ -11,13 +11,15 @@
 <body class="bg-black">
 
     <header>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3 py-3">
+            <div class="container-fluid px-md-5">
+                <a class="navbar-brand d-flex align-items-center ms-lg-4" asp-controller="Cliente" asp-action="Inicio"
+                   style="font-weight: bold; letter-spacing: -0.5px;">
+                    <img src="~/imagenes/logo.png.png" alt="Logo MLS" height="50" class="me-3" style="object-fit: contain;">
 
-                <a class="navbar-brand" asp-controller="Cliente" asp-action="Inicio">
-                    MarketLocalShirts3
+                    <span class="text-white">MarketLocalShirts3</span>
                 </a>
-
+            
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -45,11 +47,31 @@
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link text-warning" asp-controller="Usuarios" asp-action="Index">Admin Usuarios</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-warning" asp-controller="Productos" asp-action="Index">Admin Productos</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle btn btn-outline-info text-white px-4"
+                               href="#"
+                               id="navbarAdmin"
+                               role="button"
+                               data-bs-toggle="dropdown"
+                               aria-expanded="false"
+                               style="border-color: #00d4ff; color: white !important; font-weight: bold; border-radius: 20px; transition: 0.3s;">
+                                Admin Panel
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow-lg"
+                                style="background-color: rgba(20, 20, 20, 0.95); border: 1px solid #00d4ff;"
+                                aria-labelledby="navbarAdmin">
+                                <li>
+                                    <a class="dropdown-item py-2 text-info" asp-controller="Usuarios" asp-action="Index">
+                                        <i class="bi bi-people-fill me-2"></i>Usuarios
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider" style="background-color: #00d4ff;"></li>
+                                <li>
+                                    <a class="dropdown-item py-2 text-info" asp-controller="Productos" asp-action="Index">
+                                        <i class="bi bi-tag-fill me-2"></i>Productos
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
 
