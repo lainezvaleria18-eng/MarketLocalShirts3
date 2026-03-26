@@ -26,7 +26,6 @@ namespace MarketLocalShirts3.Models
 
         [Required(ErrorMessage = "La marca es obligatoria")]
         public int MarcaId { get; set; }
-
         public Marca? Marca { get; set; }
     }
 
