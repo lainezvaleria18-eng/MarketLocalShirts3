@@ -26,7 +26,7 @@ namespace MarketLocalShirts3.Controllers
             {
                 productos = productos.Where(p =>
                     p.Nombre.Contains(buscar) ||
-                    p.Descripcion.Contains(buscar));
+                     (p.Descripcion != null && p.Descripcion.Contains(buscar)));
             }
 
             return View(await productos.ToListAsync());

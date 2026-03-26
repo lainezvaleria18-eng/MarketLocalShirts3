@@ -12,7 +12,7 @@ namespace MarketLocalShirts3.Models
 
         [Required(ErrorMessage = "Este campo es obligatorio")]
         [StringLength(500, ErrorMessage = "La descripción no puede superar los 500 caracteres")]
-        public string Descripcion { get; set; } = "";
+        public string? Descripcion { get; set; }
 
         [Required(ErrorMessage = "Este campo es obligatorio")]
         [Range(0.01, 10000, ErrorMessage = "El precio debe ser mayor a 0")]
@@ -22,10 +22,11 @@ namespace MarketLocalShirts3.Models
         [Range(0, 10000, ErrorMessage = "El stock no puede ser negativo")]
         public int Stock { get; set; }
 
-        public string Imagen { get; set; } = "";
+        public string? Imagen { get; set; }
 
         [Required(ErrorMessage = "La marca es obligatoria")]
         public int MarcaId { get; set; }
+
         public Marca? Marca { get; set; }
     }
 
