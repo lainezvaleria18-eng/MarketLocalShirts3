@@ -44,7 +44,11 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Cliente" asp-action="Registro">Crear Cuenta</a>
                         </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Marcas" asp-action="Index">Mantenimiento De Marcas</a>
+                            </li>
                     </ul>
+                    
 
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item dropdown">
@@ -71,6 +75,11 @@
                                         <i class="bi bi-tag-fill me-2"></i>Productos
                                     </a>
                                 </li>
+                                    <li>
+                                        <a class="dropdown-item py-2 text-info" asp-controller="Pedidos" asp-action="Index">
+                                            <i class="bi bi-tag-fill me-2"></i>Consultar Pedidos
+                                        </a>
+                                    </li>
                             </ul>
                         </li>
                     </ul>

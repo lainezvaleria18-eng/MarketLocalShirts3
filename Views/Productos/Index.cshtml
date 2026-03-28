@@ -11,7 +11,11 @@
 
 <a asp-action="Create" class="btn btn-primary mb-3">Agregar producto</a>
 
-<form asp-action="Index" method="get" class="d-flex">
+<form asp-action="Index"
+      method="get"
+      class="d-flex align-items-center mb-3">
+
+    <!-- Buscar por nombre o descripción -->
     <input type="text"
            name="buscar"
            class="form-control me-2"
@@ -19,9 +23,28 @@
            style="width: 450px;"
            value="@Context.Request.Query["buscar"]" />
 
-    <button type="submit" class="btn btn-success">
+    <!-- Buscar por marca -->
+    <select name="marcaId"
+            class="form-select me-2"
+            style="width: 220px;">
+
+        <option value="">Todas las marcas</option>
+
+        @foreach (var m in ViewBag.Marcas)
+        {
+            <option value="@m.Id">
+                @m.Nombre
+            </option>
+        }
+
+    </select>
+
+    <!-- Botón buscar -->
+    <button type="submit"
+            class="btn btn-success">
         Buscar
     </button>
+
 </form>
 
 

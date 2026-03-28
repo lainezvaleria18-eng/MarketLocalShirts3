@@ -1,0 +1,43 @@
+﻿@model IEnumerable<MarketLocalShirts3.Models.DetallePedido>
+
+<h2 class="text-white">Detalle del Pedido</h2>
+
+<a asp-action="Index"
+       class="btn btn-secondary mb-3">
+    Volver
+</a>
+
+<table class="table table-dark table-bordered">
+
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var d in Model)
+        {
+            <tr>
+
+                <td>
+                    @d.Producto?.Nombre
+                </td>
+
+                <td>
+                    @d.Cantidad
+                </td>
+
+                <td>
+                    @d.Precio
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

@@ -142,22 +142,40 @@ namespace MarketLocalShirts3.Controllers
 
             return RedirectToAction("Login");
         }
+      
         [Authorize]
-        public async Task<IActionResult> MisPedidos()
+        public async Task<IActionResult> MisPedidos(string? buscar, DateTime? fecha)
         {
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
 
             if (usuarioId == null)
             {
-                return RedirectToAction("Login");
+                return RedirectToAction("Login", "Cliente");
             }
 
-            var pedidos = await _context.Pedidos
-                .Where(p => p.UsuarioId == usuarioId)
-                .OrderByDescending(p => p.FechaPedido)
-                .ToListAsync();
+            var pedidos = _context.Pedidos
+                .Include(p => p.Detalles)
+                .ThenInclude(d => d.Producto)
+                .Where(p => p.UsuarioId == usuarioId.Value)
+                .AsQueryable();
 
-            return View(pedidos);
+            // 🔎 FILTRO POR NOMBRE
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                pedidos = pedidos.Where(p =>
+                    p.Detalles.Any(d =>
+                        d.Producto != null &&
+                        d.Producto.Nombre.Contains(buscar)));
+            }
+
+            // 📅 FILTRO POR FECHA
+            if (fecha.HasValue)
+            {
+                pedidos = pedidos.Where(p =>
+                    p.FechaPedido.Date == fecha.Value.Date);
+            }
+
+            return View(await pedidos.ToListAsync());
         }
 
         [Authorize]

@@ -16,7 +16,7 @@ namespace MarketLocalShirts3.Controllers
             _env = env;
         }
 
-        public async Task<IActionResult> Index(string buscar)
+        public async Task<IActionResult> Index(string buscar, int? marcaId)
         {
             var productos = _context.Productos
                 .Include(p=> p.Marca)
@@ -28,6 +28,14 @@ namespace MarketLocalShirts3.Controllers
                     p.Nombre.Contains(buscar) ||
                      (p.Descripcion != null && p.Descripcion.Contains(buscar)));
             }
+
+            if (marcaId.HasValue && marcaId.Value > 0)
+            {
+                productos = productos.Where(p =>
+                    p.MarcaId == marcaId.Value);
+            }
+
+            ViewBag.Marcas = await _context.Marcas.ToListAsync();
 
             return View(await productos.ToListAsync());
         }

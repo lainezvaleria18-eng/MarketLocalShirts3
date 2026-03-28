@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MarketLocalShirts3.Models.Marca>
+
+<h2 class="text-white">Mantenimiento de Marcas</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">
+    Agregar Marca
+</a>
+
+<table class="table table-dark table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m.Nombre</td>
+
+                <td>
+                    <a asp-action="Edit"
+                           asp-route-id="@m.Id"
+                           class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                           asp-route-id="@m.Id"
+                           class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

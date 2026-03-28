@@ -1,0 +1,30 @@
+﻿@model MarketLocalShirts3.Models.Marca
+
+<h2 class="text-white">Eliminar Marca</h2>
+
+<h4 class="text-white">
+    ¿Seguro que deseas eliminar esta marca?
+</h4>
+
+<div class="mb-3">
+    <strong class="text-white">
+        @Model.Nombre
+    </strong>
+</div>
+
+<form asp-action="Delete">
+
+    <input type="hidden"
+           asp-for="Id" />
+
+    <button type="submit"
+            class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a asp-action="Index"
+           class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
