@@ -100,11 +100,9 @@ namespace MarketLocalShirts3.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
-
             if (usuario != null)
             {
                 var cliente = await _context.Clientes
@@ -116,10 +114,8 @@ namespace MarketLocalShirts3.Controllers
                 }
 
                 _context.Usuarios.Remove(usuario);
-
                 await _context.SaveChangesAsync();
             }
-
             return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> Bloquear(int id)

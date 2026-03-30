@@ -12,7 +12,6 @@
            name="buscar"
            class="form-control me-2"
            placeholder="Buscar usuario..."
-           style="width: 450px;"
            value="@Context.Request.Query["buscar"]" />
 
     <button type="submit"
@@ -47,7 +46,6 @@
                 <td>@u.Rol?.Nombre</td>
                 <td>@(u.EsActivo ? "Sí" : "No")</td>
                 <td>@u.FechaRegistro</td>
-
                 <td>@u.Cliente?.Direccion</td>
                 <td>@u.Cliente?.Telefono</td>
                 <td>@u.Cliente?.Ciudad</td>
@@ -69,7 +67,6 @@
                           asp-route-id="@u.Id"
                           method="post"
                           style="display:inline">
-
 
                         <button class="btn btn-danger btn-sm"
                                 onclick="return confirm('¿Eliminar el usuario?')">
