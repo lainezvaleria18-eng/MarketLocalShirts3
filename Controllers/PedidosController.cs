@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MarketLocalShirts3.Models;
-
+using Microsoft.AspNetCore.Authorization;
 namespace MarketLocalShirts3.Controllers
 {
+    [Authorize]
     public class PedidosController : Controller
     {
         private readonly MarketLocalShirts3Context _context;
@@ -13,17 +14,31 @@ namespace MarketLocalShirts3.Controllers
             _context = context;
         }
 
-        // 📋 LISTAR TODOS LOS PEDIDOS
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string buscar, DateTime? fecha)
         {
-            var pedidos = await _context.Pedidos
-                .Include(p => p.Usuario)
+            var consulta = _context.Pedidos
+                .Include(p => p.Usuario!)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(buscar))
+            {
+                consulta = consulta.Where(p => p.Usuario!.Nombre.Contains(buscar));
+            }
+
+            if (fecha.HasValue)
+            {
+                consulta = consulta.Where(p => p.FechaPedido.Date == fecha.Value.Date);
+            }
+
+            var pedidos = await consulta
+                .OrderByDescending(p => p.FechaPedido)
+                .Take(10)
                 .ToListAsync();
 
             return View(pedidos);
         }
 
-        // 📦 VER DETALLE DEL PEDIDO
+
         public async Task<IActionResult> Detalle(int id)
         {
             var detalles = await _context.PedidosDetalles
@@ -32,6 +47,21 @@ namespace MarketLocalShirts3.Controllers
                 .ToListAsync();
 
             return View(detalles);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActualizarEstado(int idPedido, string nuevoEstado)
+        {
+            var pedido = await _context.Pedidos.FindAsync(idPedido);
+
+            if (pedido != null)
+            {
+                pedido.Estado = nuevoEstado;
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

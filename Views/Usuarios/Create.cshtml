@@ -1,49 +1,116 @@
 ﻿@model MarketLocalShirts3.ViewModels.UsuarioViewModel
 
-<div class="d-flex justify-content-center">
-    <div class="card bg-black text-white p-4" style="width:400px;">
-        <h4 class="bg-primary text-center p-2">Formulario de usuario</h4>
+<style>
+    body {
+        background-color: #000;
+        font-family: Arial, Helvetica, sans-serif;
+    }
 
-        <form asp-action="Create" method="post" novalidate>
+    .form-box {
+        width: 380px;
+        border: 1px solid #555;
+        padding: 20px;
+        color: #fff;
+    }
+
+    .form-title {
+        background-color: #2196f3;
+        color: #000;
+        text-align: center;
+        padding: 6px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+        .form-row input,
+        .form-row select {
+            width: 100%;
+            height: 22px;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+    .form-buttons {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .btn-simple {
+        background-color: #2196f3;
+        border: none;
+        color: #000;
+        padding: 4px 14px;
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+        .btn-simple:hover {
+            opacity: 0.9;
+        }
+</style>
+
+<div style="display:flex; justify-content:center; align-items:center; height:80vh;">
+    <div class="form-box">
+
+        <div class="form-title">Formulario de usuario</div>
+
+        <form asp-action="Create" method="post" >
             @Html.AntiForgeryToken()
 
-            <label>Nombre:</label>
-            <input asp-for="Nombre" class="form-control mb-2" />
-            <span asp-validation-for="Nombre" class="text-danger d-block mb-2"></span>
-
-            <label>Email:</label>
-            <input asp-for="Email" type="text" class="form-control mb-2" />
-            <span asp-validation-for="Email" class="text-danger d-block mb-2"></span>
-
-            <label>Contraseña:</label>
-            <input asp-for="PasswordHash" type="password" class="form-control mb-2" />
-            <span asp-validation-for="PasswordHash" class="text-danger d-block mb-2"></span>
-
-            <div class="form-group">
-                <label>Dirección</label>
-                <input asp-for="Direccion" class="form-control mb-2" />
-                <span asp-validation-for="Direccion" class="text-danger d-block mb-2"></span>
+            <div class="form-row">
+                <label>Nombre:</label>
+                <input asp-for="Nombre" />
+                <span asp-validation-for="Nombre" style="color:red;"></span>
             </div>
 
-            <div class="form-group">
-                <label>Teléfono</label>
-                <input asp-for="Telefono" class="form-control mb-2" />
-                <span asp-validation-for="Telefono" class="text-danger d-block mb-2"></span>
+            <div class="form-row">
+                <label>Email:</label>
+                <input asp-for="Email" type="text" />
+                <span asp-validation-for="Email" style="color:red;"></span>
             </div>
 
-            <div class="form-group">
-                  <label>Ciudad</label>
-                  <input asp-for="Ciudad" class="form-control mb-2" />
-                  <span asp-validation-for="Ciudad" class="text-danger d-block mb-2"></span>
+            <div class="form-row">
+                <label>Contraseña:</label>
+                <input asp-for="PasswordHash" type="password" />
+                <span asp-validation-for="PasswordHash" style="color:red;"></span>
             </div>
-           
-            <label>Rol:</label>
-            <select asp-for="RolId" asp-items="ViewBag.RolId" class="form-control mb-2"></select>
-            <span asp-validation-for="RolId" class="text-danger d-block mb-2"></span>
 
-            <div class="text-center mt-3">
-                <button type="submit" class="btn btn-primary">Guardar</button>
-                <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+            <div class="form-row">
+                <label>Dirección:</label>
+                <input asp-for="Direccion" />
+                <span asp-validation-for="Direccion" style="color:red;"></span>
+            </div>
+
+            <div class="form-row">
+                <label>Teléfono:</label>
+                <input asp-for="Telefono" />
+                <span asp-validation-for="Telefono" style="color:red;"></span>
+            </div>
+
+            <div class="form-row">
+                <label>Ciudad:</label>
+                <input asp-for="Ciudad" />
+                <span asp-validation-for="Ciudad" style="color:red;"></span>
+            </div>
+
+            <div class="form-row">
+                <label>Rol:</label>
+                <select asp-for="RolId" asp-items="ViewBag.RolId"></select>
+                <span asp-validation-for="RolId" style="color:red;"></span>
+            </div>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn-simple">Guardar</button>
+                <a asp-action="Index" class="btn-simple">Cancelar</a>
             </div>
 
         </form>

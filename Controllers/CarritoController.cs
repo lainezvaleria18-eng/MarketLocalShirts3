@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using MarketLocalShirts3.Models;
 using System.Text.Json;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MarketLocalShirts3.Controllers
 {
+
+    [Authorize]
     public class CarritoController : Controller
     {
         private readonly MarketLocalShirts3Context _context;
@@ -17,6 +20,10 @@ namespace MarketLocalShirts3.Controllers
 
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetInt32("UsuarioId") == null)
+            {
+                return RedirectToAction("Login", "Cliente");
+            }
             return View(ObtenerCarrito());
         }
 

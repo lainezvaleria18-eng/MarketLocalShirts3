@@ -19,6 +19,15 @@
             <label class="text-white mt-2">Contraseña:</label>
             <input asp-for="PasswordHash" class="form-control form-control-sm" />
 
+            <label class="text-white mt-2">Dirección:</label>
+            <input asp-for="Cliente.Direccion" class="form-control form-control-sm" />
+
+            <label class="text-white mt-2">Teléfono:</label>
+            <input asp-for="Cliente.Telefono" class="form-control form-control-sm" />
+
+            <label class="text-white mt-2">Ciudad:</label>
+            <input asp-for="Cliente.Ciudad" class="form-control form-control-sm" />
+
             <label class="text-white mt-2">Rol ( Admin ):</label>
             <select asp-for="RolId" asp-items="ViewBag.RolId" class="form-control form-control-sm"></select>
 

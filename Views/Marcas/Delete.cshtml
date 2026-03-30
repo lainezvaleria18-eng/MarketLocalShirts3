@@ -1,30 +1,37 @@
 ﻿@model MarketLocalShirts3.Models.Marca
 
-<h2 class="text-white">Eliminar Marca</h2>
+<div class="d-flex justify-content-center mt-5">
 
-<h4 class="text-white">
-    ¿Seguro que deseas eliminar esta marca?
-</h4>
+    <div style="width: 420px; border: 1px solid white; padding: 20px;">
 
-<div class="mb-3">
-    <strong class="text-white">
-        @Model.Nombre
-    </strong>
+        <div class="bg-danger text-center p-2 mb-3">
+            <strong>Eliminar marca</strong>
+        </div>
+
+        <div class="text-white text-center mb-3">
+            ¿Seguro que deseas eliminar esta marca?
+        </div>
+
+        <div class="text-center mb-4">
+            <input value="@Model.Nombre" class="form-control text-center" readonly />
+        </div>
+
+        <form asp-action="Delete">
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-danger me-2">
+                    Eliminar
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
-
-<form asp-action="Delete">
-
-    <input type="hidden"
-           asp-for="Id" />
-
-    <button type="submit"
-            class="btn btn-danger">
-        Eliminar
-    </button>
-
-    <a asp-action="Index"
-           class="btn btn-secondary">
-        Cancelar
-    </a>
-
-</form>

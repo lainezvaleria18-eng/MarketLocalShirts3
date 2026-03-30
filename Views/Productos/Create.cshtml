@@ -57,6 +57,9 @@
         text-decoration: none;
     }
 
+        .btn-simple:hover {
+            opacity: 0.9;
+        }
 </style>
 
 <div style="display:flex; justify-content:center; align-items:center; height:80vh;">
@@ -65,7 +68,7 @@
 
         <div class="form-title">Agregar producto</div>
 
-        <form asp-action="Create" method="post" enctype="multipart/form-data" novalidate>
+        <form asp-action="Create" method="post" enctype="multipart/form-data" >
 
             <div asp-validation-summary="ModelOnly" style="color:red;"></div>
 
@@ -83,13 +86,13 @@
 
             <div class="form-row">
                 <label>Precio:</label>
-                <input asp-for="Precio"/>
+                <input asp-for="Precio" />
                 <span asp-validation-for="Precio" style="color:red;"></span>
             </div>
 
             <div class="form-row">
                 <label>Stock:</label>
-                <input asp-for="Stock"/>
+                <input asp-for="Stock" />
                 <span asp-validation-for="Stock" style="color:red;"></span>
             </div>
 
@@ -117,3 +120,8 @@
         </form>
     </div>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

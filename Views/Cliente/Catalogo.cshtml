@@ -1,101 +1,158 @@
-﻿@if (TempData["SinStock"] != null)
+﻿@model IEnumerable<MarketLocalShirts3.Models.Producto>
+
+@if (TempData["SinStock"] != null)
 {
-    <div class="alert alert-danger">
-        @TempData["SinStock"]
+    <div class="alert alert-danger shadow-sm border-0 mb-4">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["SinStock"]
     </div>
 }
 
-@model IEnumerable<MarketLocalShirts3.Models.Producto>
+<div class="container py-4">
+    <h2 class="text-white mb-5 text-center fw-bold" style="letter-spacing: 1px;">CATÁLOGO DE PLAYERAS</h2>
 
-<h2 class="text-white mb-4">Catálogo De Playeras Para Hombres</h2>
+    <form method="get" asp-action="Catalogo" class="mb-5">
+        <div class="row g-2 justify-content-center align-items-center">
+            <div class="col-md-5">
+                <input type="text" name="buscar" class="form-control bg-white text-dark py-2 shadow-sm border-0"
+                       placeholder="¿Qué playera buscas?" value="@ViewBag.Busqueda" />
+            </div>
 
-<script>
-//Buscar por nombre y marca
-</script>
+            <div class="col-md-3">
+                <select name="marcaId" class="form-select bg-white text-dark py-2 shadow-sm border-0">
+                    <option value="0">Todas las marcas</option>
+                    @foreach (var marca in ViewBag.Marcas)
+                    {
+                        if (ViewBag.MarcaSeleccionada == marca.Id)
+                        {
+                            <option value="@marca.Id" selected>@marca.Nombre</option>
+                        }
+                        else
+                        {
+                            <option value="@marca.Id">@marca.Nombre</option>
+                        }
+                    }
 
-<form method="get" asp-action="Catalogo" class="mb-4">
-    <div class="row g-2">
+                </select>
 
-     
-        <div class="col-md-8">
-            <input type="text"
-                   name="buscar"
-                   class="form-control"
-                   placeholder="Buscar producto por nombre..."
-                   value="@ViewBag.Busqueda" />
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-success w-100 py-2 fw-bold shadow-sm text-uppercase">
+                    BUSCAR
+                </button>
+            </div>
+
         </div>
 
-        <div class="col-md-3">
-            <select name="marcaId" class="form-select">
+    </form>
 
-                <option value="0">Todas las marcas</option>
-                @foreach (var marca in ViewBag.Marcas)
-                {
-                    if (ViewBag.MarcaSeleccionada == marca.Id)
-                    {
-                        <option value="@marca.Id" selected>
-                            @marca.Nombre
-                        </option>
-                    }
-                    else
-                    {
-                        <option value="@marca.Id">
-                            @marca.Nombre
-                        </option>
-                    }
-                }
-               }
-
-            </select>
-        </div>
-
-     
-        <div class="col-md-1">
-            <button type="submit" class="btn btn-primary w-100">
-                Buscar
-            </button>
-        </div>
-
-    </div>
-</form>
-
-<div class="row" id="listaProductos">
-
-    @if (!Model.Any())
-    {
-        <div class="alert alert-warning">
-            No se encontraron productos
-        </div>
-    }
-
-    @foreach (var p in Model)
-    {
-        <div class="col-md-3 mb-4 producto-item">
-            <div class="card bg-dark text-white h-100" data-nombre="@p.Nombre.ToLower()">
-                <img src="@Url.Content("~/imagenes/" + p.Imagen)" class="card-img-top" style="height:300px;object-fit:cover;" />
-                <div class="card-body">
-                    <p>Nombre: @p.Nombre</p>
-                    <p>Marca: @p.Marca?.Nombre</p>
-                    <p>Descripción: @p.Descripcion</p>
-                    <p>Precio: $@p.Precio</p>
-                </div>
-                <div class="card-footer bg-dark border-0">
-                    @if (p.Stock == 0)
-                    {
-                        <span class="badge bg-danger">Producto agotado</span>
-                    }
-                    else
-                    {
-                        <a asp-controller="Carrito"
-                           asp-action="Agregar"
-                           asp-route-id="@p.Id"
-                           class="btn btn-primary">
-                            Agregar al carrito
-                        </a>
-                    }
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="listaProductos">
+        @if (!Model.Any())
+        {
+            <div class="col-12 text-center py-5">
+                <div class="alert alert-dark border-secondary text-secondary py-4">
+                    <i class="bi bi-search fs-1 mb-3 d-block"></i>
+                    No se encontraron productos que coincidan con tu búsqueda.
                 </div>
             </div>
-        </div>
-    }
+        }
+
+        @foreach (var p in Model)
+        {
+            <div class="col producto-item">
+                <div class="card h-100 border-0 shadow-lg transition-card" style="background: #1a1a1a; border-radius: 12px; overflow: hidden;">
+
+                    <div class="position-relative overflow-hidden" style="height: 320px;">
+                        <img src="@Url.Content("~/imagenes/" + p.Imagen!)" class="card-img-top w-100 h-100"
+                             style="object-fit: cover; transition: transform 0.5s ease;" alt="@p.Nombre" />
+
+                        <div class="position-absolute top-0 end-0 m-2">
+                            <span class="badge bg-primary px-3 py-2 shadow-sm rounded-pill">
+                                @p.Marca?.Nombre
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="card-body d-flex flex-column p-3">
+                        <h5 class="card-title text-white mb-1 fw-bold fs-6">@p.Nombre</h5>
+                        <p class="card-text text-secondary small mb-3 text-truncate-2">
+                            @p.Descripcion
+                        </p>
+
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <span class="text-info fw-bold fs-5">$@p.Precio.ToString("0.00")</span>
+                            @if (p.Stock > 0 && p.Stock <= 5)
+                            {
+                                <small class="text-warning fw-bold" style="font-size: 0.7rem;">¡Últimas @p.Stock!</small>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-transparent border-0 p-3 pt-0">
+                        @if (p.Stock == 0)
+                        {
+                            <button class="btn btn-secondary w-100 disabled rounded-pill opacity-50">
+                                AGOTADO
+                            </button>
+                        }
+                        else
+                        {
+                            if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <a asp-controller="Carrito" asp-action="Agregar" asp-route-id="@p.Id"
+                                   class="btn btn-outline-info w-100 rounded-pill fw-bold btn-buy">
+                                    <i class="bi bi-cart-plus me-2"></i>AÑADIR
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Acceso" asp-action="Login"
+                                   class="btn btn-outline-info w-100 rounded-pill fw-bold btn-buy">
+                                    <i class="bi bi-cart-plus me-2"></i>AÑADIR
+                                </a>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
-  
+
+<style>
+    .transition-card {
+        transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    }
+
+        .transition-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6) !important;
+        }
+
+            .transition-card:hover img {
+                transform: scale(1.1);
+            }
+
+    .btn-buy {
+        transition: all 0.3s ease;
+        border-width: 2px;
+    }
+
+        .btn-buy:hover {
+            background-color: #0dcaf0;
+            color: #000 !important;
+            transform: scale(1.02);
+        }
+
+    .text-truncate-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 40px;
+    }
+
+    body {
+        background-color: #0d0d0d;
+    }
+</style>

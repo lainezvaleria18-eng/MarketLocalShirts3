@@ -18,7 +18,20 @@
             </button>
 
         </form>
+        <div class="text-center mt-3">
+            <a asp-controller="Cuenta" asp-action="RecuperarPassword">
+                ¿Olvidaste tu contraseña?
+            </a>
+        </div>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="text-danger text-center mt-2">
+                @ViewBag.Error
+            </div>
+        }
 
     </div>
 
-</div>
+    </div>
+

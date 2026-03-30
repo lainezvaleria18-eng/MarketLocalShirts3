@@ -154,12 +154,13 @@ namespace MarketLocalShirts3.Controllers
             }
 
             var pedidos = _context.Pedidos
+                .Include(p => p.Usuario)
                 .Include(p => p.Detalles)
                 .ThenInclude(d => d.Producto)
                 .Where(p => p.UsuarioId == usuarioId.Value)
                 .AsQueryable();
 
-            // 🔎 FILTRO POR NOMBRE
+            //  FILTRO POR NOMBRE
             if (!string.IsNullOrEmpty(buscar))
             {
                 pedidos = pedidos.Where(p =>
@@ -168,7 +169,7 @@ namespace MarketLocalShirts3.Controllers
                         d.Producto.Nombre.Contains(buscar)));
             }
 
-            // 📅 FILTRO POR FECHA
+            // FILTRO POR FECHA
             if (fecha.HasValue)
             {
                 pedidos = pedidos.Where(p =>

@@ -77,7 +77,10 @@ namespace MarketLocalShirts3.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
+            var usuario = await _context.Usuarios
+                .Include(u => u.Cliente)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
             if (usuario == null) return NotFound();
 
             ViewBag.RolId = new SelectList(_context.Roles, "Id", "Nombre", usuario.RolId);
@@ -88,7 +91,10 @@ namespace MarketLocalShirts3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Usuario usuario)
         {
-            var usuarioDb = await _context.Usuarios.FindAsync(usuario.Id);
+            var usuarioDb = await _context.Usuarios
+                .Include(u => u.Cliente)
+                .FirstOrDefaultAsync(u => u.Id == usuario.Id);
+
             if (usuarioDb == null) return NotFound();
 
             usuarioDb.Nombre = usuario.Nombre;
@@ -96,15 +102,65 @@ namespace MarketLocalShirts3.Controllers
             usuarioDb.PasswordHash = usuario.PasswordHash;
             usuarioDb.RolId = usuario.RolId;
 
+            if (usuarioDb.Cliente != null && usuario.Cliente != null)
+            {
+                usuarioDb.Cliente.Direccion = usuario.Cliente.Direccion;
+                usuarioDb.Cliente.Telefono = usuario.Cliente.Telefono;
+                usuarioDb.Cliente.Ciudad = usuario.Cliente.Ciudad;
+            }
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int id)
         {
+            var usuario = await _context.Usuarios
+                .Include(u => u.Rol)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            return View(usuario);
+        }
+
+        [HttpPost, ActionName("DeleteConfirmed")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
             var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario != null)
             {
+               
+                var pedidosIds = await _context.Pedidos
+                    .Where(p => p.UsuarioId == id)
+                    .Select(p => p.Id)
+                    .ToListAsync();
+
+                if (pedidosIds.Any())
+                {
+                    
+                    var detalles = await _context.PedidosDetalles
+                        .Where(d => pedidosIds.Contains(d.PedidoId))
+                        .ToListAsync();
+
+                    if (detalles.Any())
+                    {
+                        _context.PedidosDetalles.RemoveRange(detalles);
+                    }
+
+                  
+                    var pedidos = await _context.Pedidos
+                        .Where(p => p.UsuarioId == id)
+                        .ToListAsync();
+
+                    _context.Pedidos.RemoveRange(pedidos);
+                }
+
+               
                 var cliente = await _context.Clientes
                     .FirstOrDefaultAsync(c => c.UsuarioId == id);
 
@@ -113,11 +169,14 @@ namespace MarketLocalShirts3.Controllers
                     _context.Clientes.Remove(cliente);
                 }
 
+                
                 _context.Usuarios.Remove(usuario);
+
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }
+
         public async Task<IActionResult> Bloquear(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);

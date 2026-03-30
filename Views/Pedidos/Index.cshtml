@@ -1,52 +1,123 @@
 ﻿@model IEnumerable<MarketLocalShirts3.Models.Pedido>
 
-<h2 class="text-white">Consultar Pedidos</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-white m-0 flex-grow-1 text-center">Consultar Pedidos</h2>
+</div>
 
-<table class="table table-dark table-bordered">
+<div class="mb-4">
+    <form asp-action="Index" method="get" class="row g-2 align-items-center justify-content-center">
+        <div class="col-md-5">
+            <input type="text" name="buscar" class="form-control"
+                   placeholder="Buscar cliente" value="@Context.Request.Query["buscar"]"
+                   style="border-radius: 4px; padding: 10px;" />
+        </div>
 
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Usuario</th>
-            <th>Fecha</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
+        <div class="col-md-4">
+            <input type="date" name="fecha" class="form-select"
+                   value="@Context.Request.Query["fecha"]"
+                   style="border-radius: 4px; padding: 10px;" />
+        </div>
 
-    <tbody>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-success w-100 text-uppercase fw-bold"
+                    style="background-color: #198754; border: none; padding: 10px;">
+                BUSCAR
+            </button>
+        </div>
 
-        @foreach (var p in Model)
-        {
-            <tr>
+    </form>
+</div>
+<div class="card bg-dark border-secondary shadow-lg mt-4" style="border-radius: 10px; overflow: hidden; margin-left: 15px; margin-right: 15px;">
+    <div class="card-header border-secondary bg-transparent py-3">
+        <h5 class="text-info m-0 fw-bold">Registros del Sistema</h5>
+    </div>
 
-                <td>
-                    @p.Id
-                </td>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover m-0 align-middle">
+                <thead class="table-light text-dark">
+                    <tr>
+                        <th class="ps-4">ID</th>
+                        <th>Usuario</th>
+                        <th>Fecha</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center pe-4">Acciones</th>
+                    </tr>
 
-                <td>
-                    @p.Usuario?.Nombre
-                </td>
+                </thead>
 
-                <td>
-                    @p.FechaPedido.ToShortDateString()
-                </td>
+                <tbody>
 
-                <td>
-                    @p.Estado
-                </td>
+                    @foreach (var p in Model)
+                    {
+                        <tr style="border-bottom: 1px solid #2d2d2d;">
+                            <td class="ps-4">@p.Id</td>
+                            <td>@p.Usuario?.Nombre</td>
+                            <td>@p.FechaPedido.ToShortDateString()</td>
+                            <td class="text-center">
+                                @{
+                                    var colorBadge = p.Estado switch
+                                    {
+                                                    "Pendiente" => "bg-warning text-dark",
+                                                    "En Proceso" => "bg-info text-dark",
+                                                    "Enviado" => "bg-primary",
+                                                    "Entregado" => "bg-success",
+                                                    "Cancelado" => "bg-danger",
+                                        _ => "bg-secondary"
+                                    };
+                                }
+                                <span class="badge @colorBadge">@p.Estado</span>
+                            </td>
 
-                <td>
-                    <a asp-action="Detalle"
-                           asp-route-id="@p.Id"
-                           class="btn btn-info btn-sm">
-                        Ver Detalle
-                    </a>
-                </td>
+                            <td class="text-center pe-4">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a asp-action="Detalle" asp-route-id="@p.Id" class="btn btn-info btn-sm">
+                                        Ver Detalle
+                                    </a>
 
-            </tr>
-        }
+                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal-@p.Id">
+                                        Editar Estado
+                                    </button>
+                                </div>
 
-    </tbody>
+                                <div class="modal fade" id="editModal-@p.Id" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content bg-dark text-white border-secondary text-start">
+                                            <form asp-action="ActualizarEstado" method="post">
+                                                <div class="modal-header border-secondary">
+                                                    <h5 class="modal-title">Actualizar Pedido #@p.Id</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="hidden" name="idPedido" value="@p.Id" />
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Cambiar estado de: <strong>@p.Estado</strong></label>
+                                                        <select name="nuevoEstado" class="form-select bg-secondary text-white border-0">
+                                                            <option value="Pendiente">Pendiente</option>
+                                                            <option value="En Proceso">En Proceso</option>
+                                                            <option value="Enviado">Enviado</option>
+                                                            <option value="Entregado">Entregado</option>
+                                                            <option value="Cancelado">Cancelado</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer border-secondary">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
 
-</table>
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,18 +1,51 @@
 ﻿@model MarketLocalShirts3.Models.Producto
 
-<h2>Eliminar producto</h2>
+<div class="d-flex justify-content-center mt-5">
 
-<h4>¿Estás seguro de eliminar este producto?</h4>
+    <div style="width: 420px; border: 1px solid white; padding: 20px;">
 
-<div class="mb-3">
-    <strong>Nombre:</strong> @Model.Nombre <br />
-    <strong>Precio:</strong> @Model.Precio <br />
-    <strong>Stock:</strong> @Model.Stock <br />
-    <strong>Marca:</strong> @Model.Marca?.Nombre
+        <div class="bg-danger text-center p-2 mb-3">
+            <strong>Eliminar producto</strong>
+        </div>
+
+        <div class="text-white text-center mb-3">
+            ¿Estás seguro de eliminar este producto?
+        </div>
+
+        <div class="mb-3">
+            <label class="text-white">Nombre:</label>
+            <input value="@Model.Nombre" class="form-control" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label class="text-white">Precio:</label>
+            <input value="@Model.Precio" class="form-control" readonly />
+        </div>
+
+        <div class="mb-3">
+            <label class="text-white">Stock:</label>
+            <input value="@Model.Stock" class="form-control" readonly />
+        </div>
+
+        <div class="mb-4">
+            <label class="text-white">Marca:</label>
+            <input value="@Model.Marca?.Nombre" class="form-control" readonly />
+        </div>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-danger me-2">
+                    Eliminar
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+
+    </div>
+
 </div>
-
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
