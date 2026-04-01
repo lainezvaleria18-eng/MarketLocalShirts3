@@ -67,7 +67,8 @@ namespace MarketLocalShirts3.Controllers
         public async Task<IActionResult> Login(string correo, string password, string? returnUrl = null)
         {
             var usuario = await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.Email == correo && u.PasswordHash == password);
+                .Include(u => u.Cliente)
+                 .FirstOrDefaultAsync(u => u.Email == correo && u.PasswordHash == password);
 
             if (usuario == null)
             {
@@ -76,6 +77,11 @@ namespace MarketLocalShirts3.Controllers
             }
 
             HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
+
+            if (usuario.Cliente != null)
+            {
+                HttpContext.Session.SetInt32("ClienteId", usuario.Cliente.Id);
+            }
 
             var claims = new List<Claim>
             {
@@ -146,9 +152,9 @@ namespace MarketLocalShirts3.Controllers
         [Authorize]
         public async Task<IActionResult> MisPedidos(string? buscar, DateTime? fecha)
         {
-            var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
+            var clienteId = HttpContext.Session.GetInt32("ClienteId");
 
-            if (usuarioId == null)
+            if (clienteId == null)
             {
                 return RedirectToAction("Login", "Cliente");
             }
@@ -157,7 +163,7 @@ namespace MarketLocalShirts3.Controllers
                 .Include(p => p.Usuario)
                 .Include(p => p.Detalles)
                 .ThenInclude(d => d.Producto)
-                .Where(p => p.UsuarioId == usuarioId.Value)
+                .Where(p => p.ClienteId == clienteId.Value)
                 .AsQueryable();
 
             //  FILTRO POR NOMBRE

@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MarketLocalShirts3.Models;
+﻿using MarketLocalShirts3.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace MarketLocalShirts3.Controllers
@@ -15,7 +16,7 @@ namespace MarketLocalShirts3.Controllers
             _context = context;
         }
 
-
+        
         public IActionResult Login()
         {
             return View();
@@ -25,7 +26,8 @@ namespace MarketLocalShirts3.Controllers
         public async Task<IActionResult> Login(string Email, string Password)
         {
             var usuario = _context.Usuarios
-                .FirstOrDefault(u => u.Email == Email && u.PasswordHash == Password);
+               .Include(u => u.Cliente)
+               .FirstOrDefault(u => u.Email == Email && u.PasswordHash == Password);
 
             if (usuario == null)
             {
@@ -46,10 +48,16 @@ namespace MarketLocalShirts3.Controllers
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 principal
             );
+            HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
+
+            if (usuario.Cliente != null)
+            {
+                HttpContext.Session.SetInt32("ClienteId", usuario.Cliente.Id);
+            }
 
             return RedirectToAction("Catalogo", "Cliente");
         }
-
+        
         public IActionResult Registro()
         {
             return View();
@@ -61,12 +69,18 @@ namespace MarketLocalShirts3.Controllers
             _context.Usuarios.Add(usuario);
             _context.SaveChanges();
 
+            var cliente = new Cliente
+            {
+                UsuarioId = usuario.Id
+            };
+
+            _context.Clientes.Add(cliente);
+            _context.SaveChanges();
+
             return RedirectToAction("Login");
         }
 
-        // =========================
-        // RECUPERAR PASSWORD
-        // =========================
+        
 
         public IActionResult RecuperarPassword()
         {
@@ -100,9 +114,7 @@ namespace MarketLocalShirts3.Controllers
             return RedirectToAction("Login");
         }
 
-        // =========================
-        // LOGOUT
-        // =========================
+        
 
         public async Task<IActionResult> Logout()
         {

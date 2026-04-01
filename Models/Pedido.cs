@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarketLocalShirts3.Models
 {
@@ -8,6 +9,9 @@ namespace MarketLocalShirts3.Models
 
         [Required(ErrorMessage = "El usuario es obligatorio")]
         public int UsuarioId { get; set; }
+
+        [ForeignKey("Cliente")]
+        public int? ClienteId { get; set; }
 
         [Required(ErrorMessage = "La fecha del pedido es obligatoria")]
         public DateTime FechaPedido { get; set; }

@@ -71,43 +71,50 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="menuPrincipal">
-                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav mx-auto align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link px-3" asp-controller="Cliente" asp-action="Inicio">
+                            <a class="nav-link px-2" asp-controller="Cliente" asp-action="Inicio">
                                 <i class="bi bi-house-door me-1"></i> Inicio
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link px-3" asp-controller="Cliente" asp-action="Catalogo">
+                            <a class="nav-link px-2" asp-controller="Cliente" asp-action="Catalogo">
                                 <i class="bi bi-grid me-1"></i> Catálogo
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link px-3" asp-controller="Cliente" asp-action="MisPedidos">
+                            <a class="nav-link px-2" asp-controller="Cliente" asp-action="MisPedidos">
                                 <i class="bi bi-bag-check me-1"></i> Mis pedidos
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link px-3" asp-controller="Cuenta" asp-action="Login">
+                            <a class="nav-link px-2" asp-controller="Cuenta" asp-action="Login">
                                 <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar sesión
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link px-3" asp-controller="Cliente" asp-action="Registro">
+                            <a class="nav-link px-2" asp-controller="Cliente" asp-action="Registro">
                                 <i class="bi bi-person-plus me-1"></i> Crear Cuenta
                             </a>
                         </li>
+
+                        <li class="nav-item ms-2">
+                            <form asp-controller="Usuarios" asp-action="Logout" method="post" class="d-inline">
+                                <button type="submit" class="nav-link btn btn-link text-danger p-0 border-0" style="text-decoration: none; font-weight: 500; white-space: nowrap;">
+                                    <i class="bi bi-power me-1"></i> Cerrar Sesión
+                                </button>
+                            </form>
+                        </li>
                     </ul>
 
-
-                    <div class="nav-item dropdown">
+                    <div class="nav-item dropdown ms-lg-3">
                         <a class="nav-link dropdown-toggle btn btn-outline-info text-white px-4 rounded-pill"
                            href="#" id="navbarAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                           style="border: 2px solid #00d4ff !important; color: white !important;">
+                           style="border: 2px solid #00d4ff !important; color: white !important; white-space: nowrap;">
                             <i class="bi bi-gear-fill me-2"></i>Admin Panel
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow-lg mt-2"

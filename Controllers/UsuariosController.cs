@@ -189,5 +189,12 @@ namespace MarketLocalShirts3.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Inicio", "Cliente");
+        }
     }
 }

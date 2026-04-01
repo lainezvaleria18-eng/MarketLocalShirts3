@@ -140,11 +140,14 @@ namespace MarketLocalShirts3.Controllers
 
             var usuarioId = HttpContext.Session.GetInt32("UsuarioId");
 
+            var clienteId = HttpContext.Session.GetInt32("ClienteId");
+
             if (usuarioId != null)
             {
                 var pedido = new Pedido
                 {
                     UsuarioId = usuarioId.Value,
+                    ClienteId = clienteId,
                     FechaPedido = DateTime.Now,
                     Estado = "Pendiente"
                 };
