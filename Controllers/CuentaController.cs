@@ -15,9 +15,6 @@ namespace MarketLocalShirts3.Controllers
             _context = context;
         }
 
-        // =========================
-        // LOGIN
-        // =========================
 
         public IActionResult Login()
         {
@@ -52,10 +49,6 @@ namespace MarketLocalShirts3.Controllers
 
             return RedirectToAction("Catalogo", "Cliente");
         }
-
-        // =========================
-        // REGISTRO
-        // =========================
 
         public IActionResult Registro()
         {
