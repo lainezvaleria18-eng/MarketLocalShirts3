@@ -57,7 +57,7 @@ namespace MarketLocalShirts3.Controllers
 
             if (archivoImagen != null)
             {
-                var nombreArchivo = Guid.NewGuid() + Path.GetExtension(archivoImagen.FileName);
+                var nombreArchivo = Path.GetFileName(archivoImagen.FileName);
                 var ruta = Path.Combine(_env.WebRootPath, "imagenes", nombreArchivo);
 
                 using var stream = new FileStream(ruta, FileMode.Create);
@@ -100,7 +100,7 @@ namespace MarketLocalShirts3.Controllers
 
             if (archivoImagen != null)
             {
-                var nombreArchivo = Guid.NewGuid() + Path.GetExtension(archivoImagen.FileName);
+                var nombreArchivo = Path.GetFileName(archivoImagen.FileName);
                 var ruta = Path.Combine(_env.WebRootPath, "imagenes", nombreArchivo);
 
                 using var stream = new FileStream(ruta, FileMode.Create);
