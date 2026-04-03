@@ -39,8 +39,24 @@ namespace MarketLocalShirts3.Controllers
         }
 
 
-        public async Task<IActionResult> Detalle(int id)
+        public async Task<IActionResult> DetallePedido(int id)
         {
+            var pedido = await _context.Pedidos
+                .Include(p => p.Usuario)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pedido != null)
+            {
+                ViewBag.IdPedido = pedido.Id;
+                ViewBag.Fecha = pedido.FechaPedido.ToString("dd/MM/yyyy");
+                ViewBag.Cliente = pedido.Usuario?.Nombre;
+                ViewBag.Estado = pedido.Estado;
+            }
+            else
+            {
+                ViewBag.Fecha = DateTime.Now.ToString("dd/MM/yyyy"); // Fecha de respaldo
+            }
+
             var detalles = await _context.PedidosDetalles
                 .Include(d => d.Producto)
                 .Where(d => d.PedidoId == id)
@@ -48,6 +64,7 @@ namespace MarketLocalShirts3.Controllers
 
             return View(detalles);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ActualizarEstado(int idPedido, string nuevoEstado)

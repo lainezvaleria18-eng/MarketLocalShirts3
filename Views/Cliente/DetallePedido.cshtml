@@ -1,28 +1,145 @@
 ﻿@model IEnumerable<MarketLocalShirts3.Models.DetallePedido>
 
-<h2 class="text-white mb-4">Detalle del Pedido</h2>
+<style>
+    .factura-box {
+        max-width: 850px;
+        margin: auto;
+    }
 
-<table class="table table-dark">
-    <thead>
-        <tr>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-        </tr>
-    </thead>
+    .texto-blanco-puro {
+        color: #ffffff !important;
+        font-weight: bold !important;
+        opacity: 1 !important;
+    }
 
-    <tbody>
-        @foreach (var d in Model)
-        {
-            <tr>
-                <td>@d.Producto?.Nombre</td>
-                <td>$@d.Precio</td>
-                <td>@d.Cantidad</td>
-            </tr>
+    .texto-gris-claro {
+        color: #f8f9fa !important;
+    }
+
+    .linea-divisora {
+        border-top: 1px solid #495057;
+        margin-top: 5px;
+    }
+
+    @@media print 
+
+    @@page {
+        margin: 0;
+    }
+
+        body {
+            background: white !important;
+            color: black !important;
         }
-    </tbody>
-</table>
 
-<a asp-action="MisPedidos" class="btn btn-secondary">
-    Volver a mis pedidos
-</a>
+        .btn, .navbar, footer, .no-print {
+            display: none !important;
+        }
+
+        .card {
+            border: 1px solid #000 !important;
+            background: white !important;
+            color: black !important;
+        }
+
+        .card-header, .card-footer {
+            border-color: #000 !important;
+        }
+       
+        .text-info, .text-white, .texto-blanco-puro, .texto-gris-claro, h3, h2, h5, p, span, td, th {
+            color: #000000 !important;
+            text-shadow: none !important;
+        }
+
+        .table {
+            color: black !important;
+            border-color: #000 !important;
+        }
+
+        .table-light {
+            background-color: #eee !important;
+            border-bottom: 2px solid #000 !important;
+        }
+
+        .table td {
+            border-color: #ddd !important;
+        }
+    
+</style>
+
+<div class="container mt-4 factura-box">
+    <div class="card bg-dark text-white border-secondary">
+
+        <div class="card-header border-secondary bg-transparent p-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="fw-bold text-info mb-0">MarketLocal Shirts</h3>
+                    <p class="texto-gris-claro mb-0">Comprobante de Pedido #@ViewBag.IdPedido</p>
+                </div>
+                <div class="text-end">
+                    <p class="mb-1 fw-bold texto-blanco-puro">
+                        Fecha: @(ViewBag.Fecha ?? DateTime.Now.ToString("dd/MM/yyyy"))
+                    </p>
+                    <span class="badge border border-info text-info">@ViewBag.Estado</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="mb-4">
+                <small class="text-uppercase texto-blanco-puro" style="letter-spacing: 1px;">CLIENTE</small>
+                <h5 class="texto-blanco-puro mt-1">@ViewBag.Cliente</h5>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle">
+                    <thead class="table-light text-dark fw-bold">
+                        <tr>
+                            <th>Producto</th>
+                            <th class="text-center">Cantidad</th>
+                            <th class="text-end">Precio Unitario</th>
+                            <th class="text-end">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody class="border-secondary">
+                        @{
+                            decimal totalFactura = 0;
+                        }
+                        @foreach (var d in Model)
+                        {
+                            var subtotal = (d.Precio * d.Cantidad);
+                            totalFactura += subtotal;
+                            <tr>
+                                <td class="py-2 texto-blanco-puro">@d.Producto?.Nombre</td>
+                                <td class="text-center texto-blanco-puro">@d.Cantidad</td>
+                                <td class="text-end texto-blanco-puro">$@d.Precio.ToString("N2")</td>
+                                <td class="text-end fw-bold texto-blanco-puro">$@subtotal.ToString("N2")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <div class="text-end" style="min-width: 220px;">
+                    <p class="texto-blanco-puro mb-0 small">TOTAL A PAGAR</p>
+                    <div class="linea-divisora"></div>
+                    <h2 class="fw-bold texto-blanco-puro mt-1" style="font-size: 2.3rem;">
+                        $@totalFactura.ToString("N2")
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer border-secondary bg-transparent p-3 no-print">
+            <div class="d-flex justify-content-between">
+                <a asp-action="MisPedidos" class="btn btn-outline-light btn-sm px-4">
+                    ← Volver a mis pedidos
+                </a>
+                <button onclick="window.print()" class="btn btn-info btn-sm px-4 text-dark fw-bold">
+                    <i class="bi bi-printer"></i> Descargar Comprobante
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
