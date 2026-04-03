@@ -103,11 +103,21 @@
                         </li>
 
                         <li class="nav-item ms-2">
-                            <form asp-controller="Usuarios" asp-action="Logout" method="post" class="d-inline">
-                                <button type="submit" class="nav-link btn btn-link text-danger p-0 border-0" style="text-decoration: none; font-weight: 500; white-space: nowrap;">
-                                    <i class="bi bi-power me-1"></i> Cerrar Sesión
-                                </button>
-                            </form>
+                                <form asp-controller="Usuarios" asp-action="Logout" method="post"
+                                      class="d-inline"
+                                      onsubmit="return confirmarLogout();">
+
+                                    <button type="button"
+                                            class="nav-link btn btn-link text-danger p-0 border-0"
+                                            style="text-decoration: none; font-weight: 500; white-space: nowrap;"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#logoutModal">
+
+                                        <i class="bi bi-power me-1"></i> Cerrar Sesión
+
+                                    </button>
+
+                                </form>
                         </li>
                     </ul>
 
@@ -145,6 +155,51 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+                <div class="modal fade" id="logoutModal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content bg-dark text-white border border-info">
+
+                            <div class="modal-header border-secondary">
+                                <h5 class="modal-title">
+                                    <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+                                    Confirmar cierre de sesión
+                                </h5>
+
+                                <button type="button"
+                                        class="btn-close btn-close-white"
+                                        data-bs-dismiss="modal">
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                ¿Estás seguro de que deseas cerrar sesión?
+                            </div>
+
+                            <div class="modal-footer border-secondary">
+
+                                <button type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal">
+                                    Cancelar
+                                </button>
+
+                                <form asp-controller="Usuarios"
+                                      asp-action="Logout"
+                                      method="post">
+
+                                    <button type="submit"
+                                            class="btn btn-danger">
+                                        Sí, cerrar sesión
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
 
 </body>
 </html>
