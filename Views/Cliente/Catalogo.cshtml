@@ -117,6 +117,27 @@
             </div>
         }
     </div>
+    <nav aria-label="Paginación" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <!-- Botón Página Anterior -->
+            <li class="page-item @(ViewBag.PaginaActual == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Catalogo", new { buscar = ViewBag.Busqueda, marcaId = ViewBag.MarcaSeleccionada, pagina = ViewBag.PaginaActual - 1 })" tabindex="-1">Anterior</a>
+            </li>
+
+            <!-- Números de página -->
+            @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
+            {
+                <li class="page-item @(i == ViewBag.PaginaActual ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Catalogo", new { buscar = ViewBag.Busqueda, marcaId = ViewBag.MarcaSeleccionada, pagina = i })">@i</a>
+                </li>
+            }
+
+            <!-- Botón Página Siguiente -->
+            <li class="page-item @(ViewBag.PaginaActual == ViewBag.TotalPaginas ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Catalogo", new { buscar = ViewBag.Busqueda, marcaId = ViewBag.MarcaSeleccionada, pagina = ViewBag.PaginaActual + 1 })">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 <style>

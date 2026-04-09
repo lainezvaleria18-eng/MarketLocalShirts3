@@ -15,8 +15,9 @@ namespace MarketLocalShirts3.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string buscar)
+        public async Task<IActionResult> Index(string buscar, int pagina = 1)
         {
+            int registrosPorPagina = 5;
             var usuarios = _context.Usuarios
                    .Include(u => u.Rol)
                    .Include(u => u.Cliente)
@@ -29,7 +30,19 @@ namespace MarketLocalShirts3.Controllers
                     u.Email.Contains(buscar));
             }
 
-            return View(await usuarios.ToListAsync());
+            int totalRegistros = await usuarios.CountAsync();
+
+            var listaUsuarios = await usuarios
+                .OrderBy(u => u.Id)
+                .Skip((pagina - 1) * registrosPorPagina)
+                .Take(registrosPorPagina)
+                .ToListAsync();
+
+            ViewBag.PaginaActual = pagina;
+            ViewBag.TotalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
+            ViewBag.Buscar = buscar;
+
+            return View(listaUsuarios);
         }
 
         public IActionResult Create()
@@ -198,3 +211,4 @@ namespace MarketLocalShirts3.Controllers
         }
     }
 }
+

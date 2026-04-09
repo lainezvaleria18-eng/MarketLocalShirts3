@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using MarketLocalShirts3.Models;
 using Microsoft.AspNetCore.Authorization;
+
 namespace MarketLocalShirts3.Controllers
 {
-    [Authorize]
     public class PedidosController : Controller
     {
         private readonly MarketLocalShirts3Context _context;
@@ -14,30 +14,44 @@ namespace MarketLocalShirts3.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string buscar, DateTime? fecha)
+        public async Task<IActionResult> Index(string buscar, DateTime? fecha, int pagina = 1)
         {
+            int registrosPorPagina = 10;
+
             var consulta = _context.Pedidos
                 .Include(p => p.Usuario!)
                 .AsQueryable();
 
+            // 🔍 Filtro por cliente
             if (!string.IsNullOrEmpty(buscar))
             {
                 consulta = consulta.Where(p => p.Usuario!.Nombre.Contains(buscar));
             }
 
+            // 📅 Filtro por fecha
             if (fecha.HasValue)
             {
                 consulta = consulta.Where(p => p.FechaPedido.Date == fecha.Value.Date);
             }
 
+            // 📊 Total de registros
+            int totalRegistros = await consulta.CountAsync();
+
+            // 📄 Paginación
             var pedidos = await consulta
                 .OrderByDescending(p => p.FechaPedido)
-                .Take(10)
+                .Skip((pagina - 1) * registrosPorPagina)
+                .Take(registrosPorPagina)
                 .ToListAsync();
+
+            // 📦 Datos para la vista
+            ViewBag.PaginaActual = pagina;
+            ViewBag.TotalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
+            ViewBag.Buscar = buscar;
+            ViewBag.Fecha = fecha?.ToString("yyyy-MM-dd");
 
             return View(pedidos);
         }
-
 
         public async Task<IActionResult> DetallePedido(int id)
         {
@@ -54,7 +68,7 @@ namespace MarketLocalShirts3.Controllers
             }
             else
             {
-                ViewBag.Fecha = DateTime.Now.ToString("dd/MM/yyyy"); // Fecha de respaldo
+                ViewBag.Fecha = DateTime.Now.ToString("dd/MM/yyyy");
             }
 
             var detalles = await _context.PedidosDetalles
