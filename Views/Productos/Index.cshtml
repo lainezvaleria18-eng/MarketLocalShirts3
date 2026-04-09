@@ -100,4 +100,40 @@
             </table>
         </div>
     </div>
+    <!-- PAGINACIÓN -->
+    <div class="d-flex justify-content-center mt-4">
+
+        @if (ViewBag.TotalPaginas > 1)
+        {
+            @if (ViewBag.PaginaActual > 1)
+            {
+                <a class="btn btn-primary me-2"
+                       href="?pagina=@(ViewBag.PaginaActual - 1)&buscar=@ViewBag.Buscar&marcaId=@ViewBag.MarcaId">
+                    Anterior
+                </a>
+            }
+
+            <span class="mx-2">
+                Página @ViewBag.PaginaActual de @ViewBag.TotalPaginas
+            </span>
+
+            @if (ViewBag.PaginaActual < ViewBag.TotalPaginas)
+            {
+                <a class="btn btn-primary ms-2"
+                       href="?pagina=@(ViewBag.PaginaActual + 1)&buscar=@ViewBag.Buscar&marcaId=@ViewBag.MarcaId">
+                    Siguiente
+                </a>
+            }
+        }
+    </div>
+
+    <div class="text-center mt-3">
+        @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
+        {
+            <a class="btn @(i == ViewBag.PaginaActual ? "btn-success" : "btn-outline-dark") m-1"
+                   href="?pagina=@i&buscar=@ViewBag.Buscar&marcaId=@ViewBag.MarcaId">
+                @i
+            </a>
+        }
+    </div>
 </div>

@@ -15,12 +15,11 @@
            name="buscar"
            class="form-control w-50 me-2"
            placeholder="Buscar usuario..."
-           value="@Context.Request.Query["buscar"]" />
+           value="@ViewBag.Buscar" />
 
     <button type="submit" class="btn btn-success">
         Buscar
     </button>
-
 </form>
 
 <div class="card bg-dark border-secondary shadow-lg mt-4" style="border-radius: 10px; overflow: hidden; margin-left: 15px; margin-right: 15px;">
@@ -60,20 +59,20 @@
                             <td class="text-center pe-4">
                                 <div class="d-flex justify-content-center gap-1">
                                     <a asp-action="Edit"
-                                       asp-route-id="@u.Id"
-                                       class="btn btn-warning btn-sm">
+                                           asp-route-id="@u.Id"
+                                           class="btn btn-warning btn-sm">
                                         Editar
                                     </a>
 
                                     <a asp-action="Bloquear"
-                                       asp-route-id="@u.Id"
-                                       class="btn btn-secondary btn-sm">
+                                           asp-route-id="@u.Id"
+                                           class="btn btn-secondary btn-sm">
                                         Bloquear
                                     </a>
 
                                     <a asp-action="Delete"
-                                       asp-route-id="@u.Id"
-                                       class="btn btn-danger btn-sm">
+                                           asp-route-id="@u.Id"
+                                           class="btn btn-danger btn-sm">
                                         Eliminar
                                     </a>
                                 </div>
@@ -84,4 +83,40 @@
             </table>
         </div>
     </div>
+</div>
+
+<!-- PAGINACIÓN -->
+<div class="d-flex justify-content-center mt-3">
+
+    @if (ViewBag.PaginaActual > 1)
+    {
+        <a class="btn btn-primary me-2"
+               href="?pagina=@(ViewBag.PaginaActual - 1)&buscar=@ViewBag.Buscar">
+            Anterior
+        </a>
+    }
+
+    <span class="text-white mt-2">
+        Página @ViewBag.PaginaActual de @ViewBag.TotalPaginas
+    </span>
+
+    @if (ViewBag.PaginaActual < ViewBag.TotalPaginas)
+    {
+        <a class="btn btn-primary ms-2"
+               href="?pagina=@(ViewBag.PaginaActual + 1)&buscar=@ViewBag.Buscar">
+            Siguiente
+        </a>
+    }
+
+</div>
+
+<!-- Números de página opcional -->
+<div class="text-center mt-2">
+    @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
+    {
+        <a class="btn btn-outline-light m-1"
+               href="?pagina=@i&buscar=@ViewBag.Buscar">
+            @i
+        </a>
+    }
 </div>

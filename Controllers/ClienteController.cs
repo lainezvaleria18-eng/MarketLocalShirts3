@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MarketLocalShirts3.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -18,16 +17,17 @@ namespace MarketLocalShirts3.Controllers
             _context = context;
         }
 
-       
         public IActionResult Inicio()
         {
             return View();
         }
 
-       //Buscar por nombre y marca
+        // Buscar por nombre y marca con paginación (8 por página)
         [AllowAnonymous]
-        public async Task<IActionResult> Catalogo(string buscar, int? marcaId)
+        public async Task<IActionResult> Catalogo(string buscar, int? marcaId, int pagina = 1)
         {
+            int registrosPorPagina = 8;
+
             var productos = _context.Productos
                 .Include(p => p.Marca)
                 .AsQueryable();
@@ -42,18 +42,23 @@ namespace MarketLocalShirts3.Controllers
                 productos = productos.Where(p => p.MarcaId == marcaId.Value);
             }
 
-            var lista = await productos.ToListAsync();
+            int totalRegistros = await productos.CountAsync();
 
-           
+            var lista = await productos
+                .OrderBy(p => p.Id)
+                .Skip((pagina - 1) * registrosPorPagina)
+                .Take(registrosPorPagina)
+                .ToListAsync();
+
             ViewBag.Marcas = await _context.Marcas.ToListAsync();
 
-           
             ViewBag.Busqueda = buscar;
             ViewBag.MarcaSeleccionada = marcaId;
+            ViewBag.PaginaActual = pagina;
+            ViewBag.TotalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
 
             return View(lista);
         }
-
 
         [AllowAnonymous]
         public IActionResult Login(string? returnUrl = null)
@@ -68,7 +73,7 @@ namespace MarketLocalShirts3.Controllers
         {
             var usuario = await _context.Usuarios
                 .Include(u => u.Cliente)
-                 .FirstOrDefaultAsync(u => u.Email == correo && u.PasswordHash == password);
+                .FirstOrDefaultAsync(u => u.Email == correo && u.PasswordHash == password);
 
             if (usuario == null)
             {
@@ -135,6 +140,7 @@ namespace MarketLocalShirts3.Controllers
 
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
+
             var cliente = new Cliente
             {
                 UsuarioId = usuario.Id,
@@ -148,7 +154,7 @@ namespace MarketLocalShirts3.Controllers
 
             return RedirectToAction("Login");
         }
-      
+
         [Authorize]
         public async Task<IActionResult> MisPedidos(string? buscar, DateTime? fecha)
         {
@@ -166,7 +172,7 @@ namespace MarketLocalShirts3.Controllers
                 .Where(p => p.ClienteId == clienteId.Value)
                 .AsQueryable();
 
-            //  FILTRO POR NOMBRE
+            // FILTRO POR NOMBRE
             if (!string.IsNullOrEmpty(buscar))
             {
                 pedidos = pedidos.Where(p =>
