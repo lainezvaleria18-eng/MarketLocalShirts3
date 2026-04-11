@@ -172,17 +172,10 @@ namespace MarketLocalShirts3.Controllers
 
                     if (detalles.Any()) _context.PedidosDetalles.RemoveRange(detalles);
 
-                    var pedidos = await _context.Pedidos
-                        .Where(p => p.UsuarioId == id)
-                        .ToListAsync();
 
                     _context.Pedidos.RemoveRange(pedidos);
                 }
 
-                var cliente = await _context.Clientes
-                    .FirstOrDefaultAsync(c => c.UsuarioId == id);
-
-                if (cliente != null) _context.Clientes.Remove(cliente);
 
                 _context.Usuarios.Remove(usuario);
                 await _context.SaveChangesAsync();
