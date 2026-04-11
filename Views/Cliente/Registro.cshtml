@@ -4,11 +4,18 @@
     ViewData["Title"] = "Crear Cuenta";
 }
 
-<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-    <div class="card p-4 shadow" style="width: 400px; background-color:#212529;">
+
+<div class="d-flex justify-content-center align-items-center px-3" style="min-height: 100vh;">
+
+
+    <div class="card p-4 shadow" style="width: 100%; max-width: 400px; background-color:#212529; border-radius:12px;">
+
+
         <h3 class="text-center text-white mb-4">Crear Cuenta</h3>
 
         <form asp-action="Registro" method="post">
+
+            <div asp-validation-summary="All" class="text-danger mb-2"></div>
 
             <div class="mb-3">
                 <input asp-for="Nombre"
@@ -30,34 +37,43 @@
                        class="form-control"
                        placeholder="Contraseña"
                        required />
-                       </div>
-             <div>
-                <div class="mb-3">
-                    <input name="Direccion"
-                           class="form-control"
-                           placeholder="Dirección"
-                           required />
-                </div>
-
-                <div class="mb-3">
-                    <input name="Telefono"
-                           class="form-control"
-                           placeholder="Teléfono"
-                           required />
-                </div>
-
-                <div class="mb-3">
-                    <input name="Ciudad"
-                           class="form-control"
-                           placeholder="Ciudad"
-                           required />
-                </div>
-
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">
+            <hr class="text-secondary" />
+
+            <div class="mb-3">
+                <input name="Direccion"
+                       class="form-control"
+                       placeholder="Dirección"
+                       required />
+            </div>
+
+            <div class="mb-3">
+                <input name="Telefono"
+                       class="form-control"
+                       placeholder="Teléfono"
+                       required />
+            </div>
+
+            <div class="mb-3">
+                <input name="Ciudad"
+                       class="form-control"
+                       placeholder="Ciudad"
+                       required />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-3">
                 Crear Cuenta
             </button>
+
+            <div class="text-center mt-3">
+                <small class="text-light">
+                    ¿Ya tienes cuenta?
+                    <a asp-controller="Usuarios" asp-action="Login" class="text-primary text-decoration-none">
+                        Inicia sesión
+                    </a>
+                </small>
+            </div>
 
         </form>
     </div>

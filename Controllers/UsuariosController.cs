@@ -157,29 +157,34 @@ namespace MarketLocalShirts3.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
+
             if (usuario != null)
             {
-                var pedidosIds = await _context.Pedidos
-                    .Where(p => p.UsuarioId == id)
-                    .Select(p => p.Id)
-                    .ToListAsync();
+                var cliente = await _context.Clientes
+                    .FirstOrDefaultAsync(c => c.UsuarioId == id);
 
-                if (pedidosIds.Any())
+                if (cliente != null)
                 {
-                    var detalles = await _context.PedidosDetalles
-                        .Where(d => pedidosIds.Contains(d.PedidoId))
-                        .ToListAsync();
+                    
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "DELETE FROM PedidosDetalles WHERE PedidoId IN (SELECT Id FROM Pedidos WHERE ClienteId = {0})",
+                        cliente.Id);
 
-                    if (detalles.Any()) _context.PedidosDetalles.RemoveRange(detalles);
+                    
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "DELETE FROM Pedidos WHERE ClienteId = {0}",
+                        cliente.Id);
 
-
-                    _context.Pedidos.RemoveRange(pedidos);
+                   
+                    _context.Clientes.Remove(cliente);
                 }
 
-
+                
                 _context.Usuarios.Remove(usuario);
+
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Index));
         }
 
