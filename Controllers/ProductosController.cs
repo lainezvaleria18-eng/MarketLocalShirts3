@@ -16,7 +16,7 @@ namespace MarketLocalShirts3.Controllers
             _env = env;
         }
 
-        // ✅ INDEX CON PAGINACIÓN
+      
         public async Task<IActionResult> Index(string buscar, int? marcaId, int pagina = 1)
         {
             int registrosPorPagina = 10;
@@ -33,23 +33,23 @@ namespace MarketLocalShirts3.Controllers
                     (p.Descripcion != null && p.Descripcion.Contains(buscar)));
             }
 
-            // 🏷️ Filtro por marca
+            
             if (marcaId.HasValue && marcaId.Value > 0)
             {
                 productos = productos.Where(p => p.MarcaId == marcaId.Value);
             }
 
-            // 📊 Total de registros
+          
             int totalRegistros = await productos.CountAsync();
 
-            // 📄 Paginación
+           
             var listaProductos = await productos
                 .OrderBy(p => p.Id)
                 .Skip((pagina - 1) * registrosPorPagina)
                 .Take(registrosPorPagina)
                 .ToListAsync();
 
-            // 📦 Datos para la vista
+            
             ViewBag.PaginaActual = pagina;
             ViewBag.TotalPaginas = (int)Math.Ceiling((double)totalRegistros / registrosPorPagina);
             ViewBag.Buscar = buscar;
@@ -60,7 +60,7 @@ namespace MarketLocalShirts3.Controllers
             return View(listaProductos);
         }
 
-        // CREAR
+      
         public IActionResult Create()
         {
             ViewBag.MarcaId = new SelectList(_context.Marcas, "Id", "Nombre");
@@ -93,7 +93,7 @@ namespace MarketLocalShirts3.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // EDITAR
+      
         public async Task<IActionResult> Edit(int id)
         {
             var producto = await _context.Productos.FindAsync(id);
@@ -163,6 +163,10 @@ namespace MarketLocalShirts3.Controllers
             var producto = await _context.Productos.FindAsync(id);
             if (producto != null)
             {
+                await _context.Database.ExecuteSqlRawAsync(
+           "DELETE FROM PedidosDetalles WHERE ProductoId = {0}",
+           id);
+
                 _context.Productos.Remove(producto);
                 await _context.SaveChangesAsync();
             }
