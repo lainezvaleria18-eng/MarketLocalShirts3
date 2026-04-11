@@ -83,7 +83,6 @@ namespace MarketLocalShirts3.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-
             ViewBag.RolId = new SelectList(_context.Roles, "Id", "Nombre", model.RolId);
             return View(model);
         }
@@ -112,7 +111,6 @@ namespace MarketLocalShirts3.Controllers
 
             usuarioDb.Nombre = usuario.Nombre;
             usuarioDb.Email = usuario.Email;
-            usuarioDb.PasswordHash = usuario.PasswordHash;
             usuarioDb.RolId = usuario.RolId;
 
             if (usuarioDb.Cliente != null && usuario.Cliente != null)
@@ -147,7 +145,6 @@ namespace MarketLocalShirts3.Controllers
             var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario != null)
             {
-               
                 var pedidosIds = await _context.Pedidos
                     .Where(p => p.UsuarioId == id)
                     .Select(p => p.Id)
@@ -155,7 +152,6 @@ namespace MarketLocalShirts3.Controllers
 
                 if (pedidosIds.Any())
                 {
-                    
                     var detalles = await _context.PedidosDetalles
                         .Where(d => pedidosIds.Contains(d.PedidoId))
                         .ToListAsync();
@@ -173,7 +169,6 @@ namespace MarketLocalShirts3.Controllers
                     _context.Pedidos.RemoveRange(pedidos);
                 }
 
-               
                 var cliente = await _context.Clientes
                     .FirstOrDefaultAsync(c => c.UsuarioId == id);
 
@@ -184,7 +179,6 @@ namespace MarketLocalShirts3.Controllers
 
                 
                 _context.Usuarios.Remove(usuario);
-
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
@@ -210,5 +204,4 @@ namespace MarketLocalShirts3.Controllers
             return RedirectToAction("Inicio", "Cliente");
         }
     }
-}
 

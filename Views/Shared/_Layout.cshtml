@@ -33,27 +33,6 @@
             letter-spacing: 1px;
         }
 
-     
-        .admin-sidebar {
-            background-color: #121212;
-            border-right: 1px solid #222;
-            min-height: 100vh;
-            padding-top: 20px;
-        }
-
-        .admin-nav-link {
-            color: #aaa !important;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-            .admin-nav-link:hover {
-                color: #00d4ff !important;
-                background: rgba(0, 212, 255, 0.05);
-            }
     </style>
 </head>
 <body class="bg-black text-white">
@@ -77,13 +56,11 @@
                                 <i class="bi bi-house-door me-1"></i> Inicio
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link px-2" asp-controller="Cliente" asp-action="Catalogo">
                                 <i class="bi bi-grid me-1"></i> Catálogo
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link px-2" asp-controller="Cliente" asp-action="MisPedidos">
                                 <i class="bi bi-bag-check me-1"></i> Mis pedidos
@@ -114,10 +91,7 @@
                                             data-bs-target="#logoutModal">
 
                                         <i class="bi bi-power me-1"></i> Cerrar Sesión
-
                                     </button>
-
-                                </form>
                         </li>
                     </ul>
 
@@ -139,7 +113,6 @@
                         </ul>
                     </div>
                 </div>
-            </div>
         </nav>
     </header>
 
@@ -149,8 +122,6 @@
         </main>
     </div>
 
-
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -159,7 +130,6 @@
                 <div class="modal fade" id="logoutModal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content bg-dark text-white border border-info">
-
                             <div class="modal-header border-secondary">
                                 <h5 class="modal-title">
                                     <i class="bi bi-exclamation-triangle text-warning me-2"></i>

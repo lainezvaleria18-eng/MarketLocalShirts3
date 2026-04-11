@@ -42,18 +42,9 @@ namespace MarketLocalShirts3.Controllers
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            var principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                principal
-            );
             HttpContext.Session.SetInt32("UsuarioId", usuario.Id);
 
-            if (usuario.Cliente != null)
-            {
-                HttpContext.Session.SetInt32("ClienteId", usuario.Cliente.Id);
-            }
 
             return RedirectToAction("Catalogo", "Cliente");
         }
@@ -81,7 +72,6 @@ namespace MarketLocalShirts3.Controllers
         }
 
         
-
         public IActionResult RecuperarPassword()
         {
             return View();
@@ -110,12 +100,10 @@ namespace MarketLocalShirts3.Controllers
             _context.SaveChanges();
 
             ViewBag.Mensaje = "Contraseña actualizada correctamente";
-
             return RedirectToAction("Login");
         }
 
         
-
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
