@@ -157,36 +157,34 @@ namespace MarketLocalShirts3.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var usuario = await _context.Usuarios.FindAsync(id);
+
             if (usuario != null)
             {
-                var pedidosIds = await _context.Pedidos
-                    .Where(p => p.UsuarioId == id)
-                    .Select(p => p.Id)
-                    .ToListAsync();
-
-                if (pedidosIds.Any())
-                {
-                    var detalles = await _context.PedidosDetalles
-                        .Where(d => pedidosIds.Contains(d.PedidoId))
-                        .ToListAsync();
-
-                    if (detalles.Any()) _context.PedidosDetalles.RemoveRange(detalles);
-
-                    var pedidos = await _context.Pedidos
-                        .Where(p => p.UsuarioId == id)
-                        .ToListAsync();
-
-                    _context.Pedidos.RemoveRange(pedidos);
-                }
-
                 var cliente = await _context.Clientes
                     .FirstOrDefaultAsync(c => c.UsuarioId == id);
 
-                if (cliente != null) _context.Clientes.Remove(cliente);
+                if (cliente != null)
+                {
+                    
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "DELETE FROM PedidosDetalles WHERE PedidoId IN (SELECT Id FROM Pedidos WHERE ClienteId = {0})",
+                        cliente.Id);
 
+                    
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "DELETE FROM Pedidos WHERE ClienteId = {0}",
+                        cliente.Id);
+
+                   
+                    _context.Clientes.Remove(cliente);
+                }
+
+                
                 _context.Usuarios.Remove(usuario);
+
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Index));
         }
 
