@@ -18,14 +18,22 @@
             border-bottom: 1px solid #333 !important;
         }
 
-        .nav-link {
-            color: #aaa !important;
-            transition: 0.3s;
-            font-weight: 500;
+      
+        .nav-link-custom {
+            color: #aaaaaa !important; 
+            font-weight: 500 !important;
+            transition: all 0.3s ease; 
+            border: 1px solid transparent;
+            border-radius: 5px;
+            margin: 0 5px;
         }
 
-            .nav-link:hover {
-                color: #00d4ff !important;
+           
+            .nav-link-custom:hover {
+                color: #00d4ff !important; 
+                background-color: rgba(0, 212, 255, 0.1); 
+                border: 1px solid #00d4ff;
+                transform: translateY(-1px); 
             }
 
         .navbar-brand span {
@@ -34,6 +42,7 @@
         }
 
     </style>
+
 </head>
 <body class="bg-black text-white">
 
@@ -51,68 +60,79 @@
 
                 <div class="collapse navbar-collapse" id="menuPrincipal">
                     <ul class="navbar-nav mx-auto align-items-center">
-                        <li class="nav-item">
-                            <a class="nav-link px-2" asp-controller="Cliente" asp-action="Inicio">
-                                <i class="bi bi-house-door me-1"></i> Inicio
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-2" asp-controller="Cliente" asp-action="Catalogo">
-                                <i class="bi bi-grid me-1"></i> Catálogo
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link px-2" asp-controller="Cliente" asp-action="MisPedidos">
-                                <i class="bi bi-bag-check me-1"></i> Mis pedidos
-                            </a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link px-2" asp-controller="Cuenta" asp-action="Login">
-                                <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar sesión
-                            </a>
-                        </li>
+                      
+                        @if (User?.Identity != null && !User.IsInRole("Administrador"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-custom px-3" asp-controller="Cliente" asp-action="Inicio">
+                                    <i class="bi bi-house-door me-1"></i> Inicio
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-custom px-3" asp-controller="Cliente" asp-action="Catalogo">
+                                    <i class="bi bi-grid me-1"></i> Catálogo
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-custom px-3" asp-controller="Cliente" asp-action="MisPedidos">
+                                    <i class="bi bi-bag-check me-1"></i> Mis pedidos
+                                </a>
+                            </li>
+                        }
 
-                        <li class="nav-item">
-                            <a class="nav-link px-2" asp-controller="Cliente" asp-action="Registro">
-                                <i class="bi bi-person-plus me-1"></i> Crear Cuenta
-                            </a>
-                        </li>
+                     
+                        @if (User?.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Administrador"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-custom px-3" asp-controller="Usuarios" asp-action="Index">
+                                    <i class="bi bi-people me-1"></i> Usuarios
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-custom px-3" asp-controller="Productos" asp-action="Index">
+                                    <i class="bi bi-box-seam me-1"></i> Productos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-custom px-3" asp-controller="Marcas" asp-action="Index">
+                                    <i class="bi bi-tags me-1"></i> Marcas
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-custom px-3" asp-controller="Pedidos" asp-action="Index">
+                                    <i class="bi bi-cart-check me-1"></i> Pedidos
+                                </a>
+                            </li>
+                        }
 
-                        <li class="nav-item ms-2">
-                                <form asp-controller="Usuarios" asp-action="Logout" method="post"
-                                      class="d-inline"
-                                      onsubmit="return confirmarLogout();">
-
-                                    <button type="button"
-                                            class="nav-link btn btn-link text-danger p-0 border-0"
-                                            style="text-decoration: none; font-weight: 500; white-space: nowrap;"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#logoutModal">
-
-                                        <i class="bi bi-power me-1"></i> Cerrar Sesión
-                                    </button>
-                        </li>
+                      
+                        @if (User?.Identity == null || !User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-custom px-3" asp-controller="Cuenta" asp-action="Login">
+                                    <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar sesión
+                                </a>
+                            </li>
+                            <li class="nav-item border-start border-secondary ms-2 ps-2">
+                                <a class="nav-link nav-link-custom px-3" asp-controller="Cliente" asp-action="Registro">
+                                    <i class="bi bi-person-plus me-1"></i> Crear Cuenta
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item ms-lg-4">
+                                <button type="button" class="nav-link btn btn-link text-danger p-0 border-0"
+                                        style="text-decoration: none;"
+                                        data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                    <i class="bi bi-power me-1"></i> Cerrar Sesión
+                                </button>
+                            </li>
+                        }
                     </ul>
-
-                    <div class="nav-item dropdown ms-lg-3">
-                        <a class="nav-link dropdown-toggle btn btn-outline-info text-white px-4 rounded-pill"
-                           href="#" id="navbarAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                           style="border: 2px solid #00d4ff !important; color: white !important; white-space: nowrap;">
-                            <i class="bi bi-gear-fill me-2"></i>Admin Panel
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow-lg mt-2"
-                            style="border: 1px solid #00d4ff;">
-                            <li><a class="dropdown-item py-2" asp-controller="Usuarios" asp-action="Index"><i class="bi bi-people me-2"></i>Usuarios</a></li>
-                            <li><hr class="dropdown-divider border-secondary"></li>
-                            <li><a class="dropdown-item py-2" asp-controller="Productos" asp-action="Index"><i class="bi bi-box-seam me-2"></i>Productos</a></li>
-                            <li><hr class="dropdown-divider border-secondary"></li>
-                            <li><a class="dropdown-item py-2" asp-controller="Marcas" asp-action="Index"><i class="bi bi-tags me-2"></i>Marcas</a></li>
-                            <li><hr class="dropdown-divider border-secondary"></li>
-                            <li><a class="dropdown-item py-2" asp-controller="Pedidos" asp-action="Index"><i class="bi bi-cart-check me-2"></i>Consultar Pedidos</a></li>
-                        </ul>
-                    </div>
                 </div>
+            </div>
         </nav>
     </header>
 
@@ -127,49 +147,29 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
-                <div class="modal fade" id="logoutModal" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content bg-dark text-white border border-info">
-                            <div class="modal-header border-secondary">
-                                <h5 class="modal-title">
-                                    <i class="bi bi-exclamation-triangle text-warning me-2"></i>
-                                    Confirmar cierre de sesión
-                                </h5>
-
-                                <button type="button"
-                                        class="btn-close btn-close-white"
-                                        data-bs-dismiss="modal">
-                                </button>
-                            </div>
-
-                            <div class="modal-body">
-                                ¿Estás seguro de que deseas cerrar sesión?
-                            </div>
-
-                            <div class="modal-footer border-secondary">
-
-                                <button type="button"
-                                        class="btn btn-secondary"
-                                        data-bs-dismiss="modal">
-                                    Cancelar
-                                </button>
-
-                                <form asp-controller="Usuarios"
-                                      asp-action="Logout"
-                                      method="post">
-
-                                    <button type="submit"
-                                            class="btn btn-danger">
-                                        Sí, cerrar sesión
-                                    </button>
-
-                                </form>
-
-                            </div>
-
-                        </div>
-                    </div>
+ 
+    <div class="modal fade" id="logoutModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white border border-info">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle text-warning me-2"></i> Confirmar</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
+                <div class="modal-body text-center py-4">
+                    ¿Estás seguro de que deseas cerrar tu sesión actual?
+                </div>
+
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form asp-controller="Cuenta" asp-action="Logout" method="post">
+                        <button type="submit" class="btn btn-danger">Sí, cerrar sesión</button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

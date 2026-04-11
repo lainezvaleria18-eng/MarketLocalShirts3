@@ -32,8 +32,8 @@
 
         @if (ViewBag.Error != null)
         {
-            <div class="text-danger text-center mt-2">
-                @ViewBag.Error
+            <div class="alert alert-danger py-2 mt-3 text-center" style="font-size: 0.9rem;">
+                <i class="bi bi-exclamation-triangle-fill"></i> @ViewBag.Error
             </div>
         }
 

@@ -3,9 +3,11 @@ using MarketLocalShirts3.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Authorization; 
 namespace MarketLocalShirts3.Controllers
 {
+    
+    [Authorize(Roles = "Administrador")]
     public class UsuariosController : Controller
     {
         private readonly MarketLocalShirts3Context _context;
@@ -61,7 +63,8 @@ namespace MarketLocalShirts3.Controllers
                 {
                     Nombre = model.Nombre,
                     Email = model.Email,
-                    PasswordHash = model.PasswordHash,
+                   
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash),
                     RolId = model.RolId,
                     FechaRegistro = DateTime.Now,
                     EsActivo = true
@@ -113,6 +116,19 @@ namespace MarketLocalShirts3.Controllers
             usuarioDb.Email = usuario.Email;
             usuarioDb.RolId = usuario.RolId;
 
+           
+            if (!string.IsNullOrEmpty(usuario.PasswordHash))
+            {
+                if (!usuario.PasswordHash.StartsWith("$2a$"))
+                {
+                    usuarioDb.PasswordHash = BCrypt.Net.BCrypt.HashPassword(usuario.PasswordHash);
+                }
+                else
+                {
+                    usuarioDb.PasswordHash = usuario.PasswordHash;
+                }
+            }
+
             if (usuarioDb.Cliente != null && usuario.Cliente != null)
             {
                 usuarioDb.Cliente.Direccion = usuario.Cliente.Direccion;
@@ -124,16 +140,14 @@ namespace MarketLocalShirts3.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        
         public async Task<IActionResult> Delete(int id)
         {
             var usuario = await _context.Usuarios
                 .Include(u => u.Rol)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (usuario == null)
-            {
-                return NotFound();
-            }
+            if (usuario == null) return NotFound();
 
             return View(usuario);
         }
@@ -156,12 +170,8 @@ namespace MarketLocalShirts3.Controllers
                         .Where(d => pedidosIds.Contains(d.PedidoId))
                         .ToListAsync();
 
-                    if (detalles.Any())
-                    {
-                        _context.PedidosDetalles.RemoveRange(detalles);
-                    }
+                    if (detalles.Any()) _context.PedidosDetalles.RemoveRange(detalles);
 
-                  
                     var pedidos = await _context.Pedidos
                         .Where(p => p.UsuarioId == id)
                         .ToListAsync();
@@ -172,12 +182,8 @@ namespace MarketLocalShirts3.Controllers
                 var cliente = await _context.Clientes
                     .FirstOrDefaultAsync(c => c.UsuarioId == id);
 
-                if (cliente != null)
-                {
-                    _context.Clientes.Remove(cliente);
-                }
+                if (cliente != null) _context.Clientes.Remove(cliente);
 
-                
                 _context.Usuarios.Remove(usuario);
                 await _context.SaveChangesAsync();
             }
@@ -205,3 +211,4 @@ namespace MarketLocalShirts3.Controllers
         }
     }
 
+}
