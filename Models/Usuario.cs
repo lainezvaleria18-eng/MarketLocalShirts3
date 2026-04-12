@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarketLocalShirts3.Models
 {
@@ -19,6 +20,11 @@ namespace MarketLocalShirts3.Models
         [Required(ErrorMessage = "La contraseña es obligatoria")]
         [StringLength(200, ErrorMessage = "La contraseña es demasiado larga")]
         public string PasswordHash { get; set; } = "";
+
+        [Required(ErrorMessage = "Debe confirmar la contraseña")]
+        [Compare("PasswordHash", ErrorMessage = "Las contraseñas no coinciden")]
+        [NotMapped]
+        public string ConfirmarPassword { get; set; } = "";
 
         [Required(ErrorMessage = "El rol es obligatorio")]
         public int RolId { get; set; }

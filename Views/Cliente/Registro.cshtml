@@ -15,51 +15,77 @@
 
         <form asp-action="Registro" method="post">
 
-            <div asp-validation-summary="All" class="text-danger mb-2"></div>
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger small mb-2"></div>
 
             <div class="mb-3">
                 <input asp-for="Nombre"
                        class="form-control"
-                       placeholder="Nombre"
-                       required />
+                       placeholder="Nombre" />
+
+                <span asp-validation-for="Nombre"
+                      class="text-danger small"></span>
             </div>
 
             <div class="mb-3">
                 <input asp-for="Email"
+                       type="email"
                        class="form-control"
-                       placeholder="Email"
-                       required />
+                       placeholder="Correo electrónico" />
+
+                <span asp-validation-for="Email"
+                      class="text-danger small"></span>
             </div>
 
             <div class="mb-3">
                 <input asp-for="PasswordHash"
                        type="password"
                        class="form-control"
-                       placeholder="Contraseña"
-                       required />
+                       placeholder="Contraseña" />
+
+                <span asp-validation-for="PasswordHash"
+                      class="text-danger small"></span>
             </div>
+
+            <div class="mb-3">
+                <input asp-for="ConfirmarPassword"
+                       type="password"
+                       class="form-control"
+                       placeholder="Confirmar contraseña" />
+
+                <span asp-validation-for="ConfirmarPassword"
+                      class="text-danger small"></span>
+            </div>
+
 
             <hr class="text-secondary" />
 
             <div class="mb-3">
-                <input name="Direccion"
+                <input asp-for="Cliente.Direccion"
                        class="form-control"
-                       placeholder="Dirección"
-                       required />
+                       placeholder="Dirección" />
+
+                <span asp-validation-for="Cliente.Direccion"
+                      class="text-danger small"></span>
             </div>
 
             <div class="mb-3">
-                <input name="Telefono"
+                <input asp-for="Cliente.Telefono"
+                       type="tel"
                        class="form-control"
-                       placeholder="Teléfono"
-                       required />
+                       placeholder="Teléfono" />
+
+                <span asp-validation-for="Cliente.Telefono"
+                      class="text-danger small"></span>
             </div>
 
             <div class="mb-3">
-                <input name="Ciudad"
+                <input asp-for="Cliente.Ciudad"
                        class="form-control"
-                       placeholder="Ciudad"
-                       required />
+                       placeholder="Ciudad" />
+
+                <span asp-validation-for="Cliente.Ciudad"
+                      class="text-danger small"></span>
             </div>
 
             <button type="submit" class="btn btn-primary w-100 mt-3">
@@ -79,3 +105,7 @@
     </div>
 
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
