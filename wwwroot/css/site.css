@@ -36,3 +36,253 @@ body {
     width: fit-content;
     background-color: #000;
 }
+/* 📱 MENÚ EN UNA SOLA LÍNEA (COMPACTO) */
+
+@media (max-width: 576px) {
+
+    .navbar-toggler {
+        display: none !important;
+    }
+
+    .navbar-collapse {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: flex-start;
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .navbar-nav {
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .nav-link {
+        font-size: 0.9rem; /* MÁS PEQUEÑO */
+        padding: 3px 4px; /* MENOS ESPACIO */
+        white-space: nowrap;
+    }
+}
+/* 📱 AJUSTAR BUSCADORES Y BOTONES EN CELULAR */
+
+@media (max-width: 576px) {
+
+    /* Input buscadores */
+    input.form-control {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+        height: auto;
+    }
+
+    /* Selects */
+    select.form-control {
+        font-size: 0.8rem;
+        padding: 6px 8px;
+        height: auto;
+    }
+
+    /* Botones */
+    .btn {
+        font-size: 0.75rem;
+        padding: 5px 8px;
+    }
+
+    /* Formularios en fila */
+    .row > div {
+        margin-bottom: 5px;
+    }
+}
+/* 📱 TABLAS DESLIZABLES */
+
+@media (max-width: 576px) {
+
+    table {
+        font-size: 0.75rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+}
+/* 📱 CATÁLOGO MÁS COMPACTO SOLO EN CELULAR */
+
+@media (max-width: 576px) {
+
+    #listaProductos .col {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    /* Ajustar contenedor imagen */
+    .producto-item .position-relative {
+        height: 220px !important;
+    }
+
+    /* Mostrar imagen completa */
+    .producto-item img {
+        object-fit: contain !important;
+        background-color: #1a1a1a;
+    }
+
+    /* Reducir título */
+    .producto-item .card-title {
+        font-size: 0.85rem;
+    }
+
+    /* Reducir descripción */
+    .producto-item .card-text {
+        font-size: 0.75rem;
+    }
+
+    /* Reducir precio */
+    .producto-item .text-info {
+        font-size: 0.9rem !important;
+    }
+
+    /* Botón más pequeño */
+    .producto-item .btn {
+        font-size: 0.75rem;
+        padding: 6px;
+    }
+}
+/* 📱 BUSCADOR DEL CATÁLOGO SOLO CELULAR */
+
+@media (max-width: 576px) {
+
+    /* Buscar y Marca en una sola línea */
+    form .col-md-5,
+    form .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    /* Botón abajo */
+    form .col-md-2 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        text-align: center;
+    }
+
+        /* Botón más corto */
+        form .col-md-2 .btn {
+            width: 60% !important;
+            font-size: 0.8rem;
+            padding: 6px;
+        }
+}
+/* 📱 CENTRAR BOTÓN BUSCAR SOLO EN MIS PEDIDOS CLIENTE */
+
+@media (max-width: 576px) {
+
+    #formMisPedidos .col-md-auto {
+        text-align: center;
+        width: 100%;
+    }
+
+    #formMisPedidos button {
+        display: inline-block;
+        margin: 0 auto;
+        width: 30%;
+    }
+}
+/* 📱 ADMIN USUARIOS — Ajustar título y botón solo en celular */
+
+@media (max-width: 576px) {
+
+    #headerUsuarios {
+        flex-direction: column;
+        text-align: center;
+    }
+
+        #headerUsuarios h2 {
+            margin-bottom: 10px;
+        }
+        
+        #headerUsuarios a {
+            width: 40%;
+            font-size: 0.8rem;
+            padding: 6px;
+        }
+}
+/* 📱 ADMIN PRODUCTOS — Ajustar título y botón solo en celular */
+
+@media (max-width: 576px) {
+
+    #headerProductos {
+        flex-direction: column;
+        text-align: center;
+    }
+
+        #headerProductos h2 {
+            margin-bottom: 10px;
+        }
+
+        #headerProductos a {
+            width: 40%;
+            font-size: 0.8rem;
+            padding: 6px;
+        }
+}
+/* 📱 MANTENIMIENTO DE MARCAS — Ajustar título y botón solo en celular */
+
+@media (max-width: 576px) {
+
+    #headerMarcas {
+        flex-direction: column;
+        text-align: center;
+    }
+
+        #headerMarcas h2 {
+            margin-bottom: 10px;
+        }
+
+        #headerMarcas a {
+            width: 90%;
+            font-size: 0.8rem;
+            padding: 6px;
+        }
+}
+/* 📱 PEDIDOS ADMIN — Ajustar búsquedas solo en celular */
+
+@media (max-width: 576px) {
+
+    /* Hacer que el row permita 2 en línea */
+
+    #formPedidosAdmin .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    /* Buscador cliente */
+
+    #formPedidosAdmin .col-md-5 {
+        width: 48%;
+    }
+
+    /* Buscador fecha */
+
+    #formPedidosAdmin .col-md-4 {
+        width: 48%;
+    }
+
+
+    /* Centrar el botón abajo */
+
+    #formPedidosAdmin .col-md-2 {
+        width: 100%;
+        text-align: center;
+        margin-top: 8px;
+    }
+
+    /* Hacer botón más corto */
+    
+    #formPedidosAdmin button {
+        width: 30%;
+        font-size: 0.8rem;
+        padding: 6px;
+    }
+}
