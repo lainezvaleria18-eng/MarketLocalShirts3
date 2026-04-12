@@ -1,43 +1,62 @@
 ﻿@model IEnumerable<MarketLocalShirts3.Models.DetallePedido>
 
-<h2 class="text-white">Detalle del Pedido</h2>
+<div class="container mt-4">
 
-<a asp-action="Index"
-       class="btn btn-secondary mb-3">
-    Volver
-</a>
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
 
-<table class="table table-dark table-bordered">
+        <a href="javascript:history.back()"
+               class="btn btn-outline-secondary mb-2">
 
-    <thead>
-        <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-        </tr>
-    </thead>
+            <i class="bi bi-arrow-left"></i>
+            Regresar
+        </a>
 
-    <tbody>
+        <h2 class="text-white m-0 text-center flex-grow-1">
+            Detalle del Pedido
+        </h2>
 
-        @foreach (var d in Model)
-        {
-            <tr>
+    </div>
 
-                <td>
-                    @d.Producto?.Nombre
-                </td>
+    
+    <div class="table-responsive">
 
-                <td>
-                    @d.Cantidad
-                </td>
+        <table class="table table-dark table-bordered align-middle">
 
-                <td>
-                    @d.Precio
-                </td>
+            <thead class="table-light text-dark">
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                </tr>
 
-            </tr>
-        }
+            </thead>
 
-    </tbody>
+            <tbody>
 
-</table>
+                @foreach (var d in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @d.Producto?.Nombre
+                        </td>
+
+                        <td>
+                            @d.Cantidad
+                        </td>
+
+                        <td>
+                            $@d.Precio
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
