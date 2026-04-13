@@ -188,61 +188,67 @@ body {
         width: 30%;
     }
 }
-/* 📱 ADMIN USUARIOS — Ajustar título y botón solo en celular */
+/* 📱 ADMIN USUARIOS — Botón arriba derecha en celular */
 
 @media (max-width: 576px) {
 
     #headerUsuarios {
-        flex-direction: column;
-        text-align: center;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
         #headerUsuarios h2 {
-            margin-bottom: 10px;
+            text-align: center;
+            flex-grow: 1;
+            font-size: 1.1rem;
         }
-        
+
         #headerUsuarios a {
-            width: 40%;
-            font-size: 0.8rem;
-            padding: 6px;
+            font-size: 0.5rem;
+            padding: 3px 4px;
         }
 }
-/* 📱 ADMIN PRODUCTOS — Ajustar título y botón solo en celular */
+/* 📱 ADMIN PRODUCTOS — Botón arriba derecha en celular */
 
 @media (max-width: 576px) {
 
     #headerProductos {
-        flex-direction: column;
-        text-align: center;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
         #headerProductos h2 {
-            margin-bottom: 10px;
+            text-align: center;
+            flex-grow: 1;
+            font-size: 1.1rem;
         }
 
         #headerProductos a {
-            width: 40%;
-            font-size: 0.8rem;
-            padding: 6px;
+            font-size: 0.5rem;
+            padding: 3px 4px;
         }
 }
-/* 📱 MANTENIMIENTO DE MARCAS — Ajustar título y botón solo en celular */
+/* 📱 MARCAS — Botón arriba derecha en celular */
 
 @media (max-width: 576px) {
 
     #headerMarcas {
-        flex-direction: column;
-        text-align: center;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 
         #headerMarcas h2 {
-            margin-bottom: 10px;
+            text-align: center;
+            flex-grow: 1;
+            font-size: 1.1rem;
         }
 
         #headerMarcas a {
-            width: 90%;
-            font-size: 0.8rem;
-            padding: 6px;
+            font-size: 0.5rem;
+            padding: 3px 4px;
         }
 }
 /* 📱 PEDIDOS ADMIN — Ajustar búsquedas solo en celular */
