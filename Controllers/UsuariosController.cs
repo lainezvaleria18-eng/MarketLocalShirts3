@@ -70,7 +70,6 @@ namespace MarketLocalShirts3.Controllers
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync(); 
 
-           
             var cliente = new Cliente
             {
                 UsuarioId = usuario.Id,
