@@ -51,35 +51,39 @@ namespace MarketLocalShirts3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UsuarioViewModel model)
         {
-            if (ModelState.IsValid)
+           
+            string dir = Request.Form["Direccion"].ToString() ?? "";
+            string tel = Request.Form["Telefono"].ToString() ?? "";
+            string ciu = Request.Form["Ciudad"].ToString() ?? "";
+
+           
+            var usuario = new Usuario
             {
-                var usuario = new Usuario
-                {
-                    Nombre = model.Nombre,
-                    Email = model.Email,
-                   
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash),
-                    RolId = model.RolId,
-                    FechaRegistro = DateTime.Now,
-                    EsActivo = true
-                };
+                Nombre = model.Nombre,
+                Email = model.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash ?? "123"),
+                RolId = model.RolId,
+                FechaRegistro = DateTime.Now,
+                EsActivo = true
+            };
 
-                _context.Usuarios.Add(usuario);
-                await _context.SaveChangesAsync();
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync(); 
 
-                var cliente = new Cliente
-                {
-                    UsuarioId = usuario.Id,
-                    Direccion = model.Direccion,
-                    Telefono = model.Telefono,
-                    Ciudad = model.Ciudad
-                };
+           
+            var cliente = new Cliente
+            {
+                UsuarioId = usuario.Id,
+                Direccion = !string.IsNullOrEmpty(dir) ? dir : (model.Direccion ?? "Sin dirección"),
+                Telefono = !string.IsNullOrEmpty(tel) ? tel : (model.Telefono ?? "0000-0000"),
+                Ciudad = !string.IsNullOrEmpty(ciu) ? ciu : (model.Ciudad ?? "Sin ciudad")
+            };
 
-                _context.Clientes.Add(cliente);
-                await _context.SaveChangesAsync();
+            _context.Clientes.Add(cliente);
+            await _context.SaveChangesAsync(); 
 
-                return RedirectToAction(nameof(Index));
-            }
+            return RedirectToAction(nameof(Index));
+        }
 
         public async Task<IActionResult> Edit(int id)
         {
@@ -147,24 +151,28 @@ namespace MarketLocalShirts3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+           
             var usuario = await _context.Usuarios.FindAsync(id);
 
             if (usuario != null)
             {
+                
+                try
+                {
+                 
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "DELETE FROM PedidosDetalles WHERE PedidoId IN (SELECT Id FROM Pedidos WHERE ClienteId IN (SELECT Id FROM Clientes WHERE UsuarioId = {0}))", id);
 
-                if (cliente != null)
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "DELETE FROM Pedidos WHERE ClienteId IN (SELECT Id FROM Clientes WHERE UsuarioId = {0})", id);
+
+                  
+                    await _context.Database.ExecuteSqlRawAsync(
+                        "DELETE FROM Clientes WHERE UsuarioId = {0}", id);
+                }
+                catch (Exception)
                 {
                     
-                    await _context.Database.ExecuteSqlRawAsync(
-                        "DELETE FROM PedidosDetalles WHERE PedidoId IN (SELECT Id FROM Pedidos WHERE ClienteId = {0})",
-                        cliente.Id);
-
-                    
-                    await _context.Database.ExecuteSqlRawAsync(
-                        "DELETE FROM Pedidos WHERE ClienteId = {0}",
-                        cliente.Id);
-
-                   
                 }
 
                 

@@ -58,34 +58,14 @@
             </div>
 
 
-            <hr class="text-secondary" />
-
             <div class="mb-3">
-                <input asp-for="Cliente.Direccion"
-                       class="form-control"
-                       placeholder="Dirección" />
-
-                <span asp-validation-for="Cliente.Direccion"
-                      class="text-danger small"></span>
+                <input name="DIR_ENTREGA" class="form-control" placeholder="Dirección" required />
             </div>
-
             <div class="mb-3">
-                <input asp-for="Cliente.Telefono"
-                       type="tel"
-                       class="form-control"
-                       placeholder="Teléfono" />
-
-                <span asp-validation-for="Cliente.Telefono"
-                      class="text-danger small"></span>
+                <input name="TEL_ENTREGA" class="form-control" placeholder="Teléfono" required />
             </div>
-
             <div class="mb-3">
-                <input asp-for="Cliente.Ciudad"
-                       class="form-control"
-                       placeholder="Ciudad" />
-
-                <span asp-validation-for="Cliente.Ciudad"
-                      class="text-danger small"></span>
+                <input name="CIU_ENTREGA" class="form-control" placeholder="Ciudad" required />
             </div>
 
             <button type="submit" class="btn btn-primary w-100 mt-3">

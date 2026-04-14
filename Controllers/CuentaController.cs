@@ -82,20 +82,42 @@ namespace MarketLocalShirts3.Controllers
         public IActionResult Registro(Usuario usuario)
         {
             
-            usuario.PasswordHash = BCrypt.Net.BCrypt.HashPassword(usuario.PasswordHash);
-            usuario.EsActivo = true; 
-            usuario.FechaRegistro = DateTime.Now;
+            string d = Request.Form["DIR_ENTREGA"].ToString() ?? "N/A";
+            string t = Request.Form["TEL_ENTREGA"].ToString() ?? "N/A";
+            string c = Request.Form["CIU_ENTREGA"].ToString() ?? "N/A";
 
-            _context.Usuarios.Add(usuario);
-            _context.SaveChanges();
+            try
+            {
+                
+                usuario.PasswordHash = BCrypt.Net.BCrypt.HashPassword(usuario.PasswordHash ?? "123");
+                usuario.EsActivo = true;
+                usuario.FechaRegistro = DateTime.Now;
+                usuario.RolId = 2; 
+               
+                usuario.Cliente = null!;
 
-            var cliente = new Cliente { UsuarioId = usuario.Id };
-            _context.Clientes.Add(cliente);
-            _context.SaveChanges();
+                _context.Usuarios.Add(usuario);
+                _context.SaveChanges(); 
 
-            return RedirectToAction("Login");
+              
+                var infoCliente = new Cliente
+                {
+                    UsuarioId = usuario.Id,
+                    Direccion = d,
+                    Telefono = t,
+                    Ciudad = c
+                };
+
+                _context.Clientes.Add(infoCliente);
+                _context.SaveChanges(); 
+
+                return RedirectToAction("Login");
+            }
+            catch (Exception)
+            {
+                return View(usuario);
+            }
         }
-
 
         public IActionResult RecuperarPassword()
         {
