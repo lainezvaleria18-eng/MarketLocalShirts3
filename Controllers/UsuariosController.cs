@@ -47,12 +47,6 @@ namespace MarketLocalShirts3.Controllers
             return View(listaUsuarios);
         }
 
-        public IActionResult Create()
-        {
-            ViewBag.RolId = new SelectList(_context.Roles, "Id", "Nombre");
-            return View();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UsuarioViewModel model)
@@ -86,9 +80,6 @@ namespace MarketLocalShirts3.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.RolId = new SelectList(_context.Roles, "Id", "Nombre", model.RolId);
-            return View(model);
-        }
 
         public async Task<IActionResult> Edit(int id)
         {
@@ -160,8 +151,6 @@ namespace MarketLocalShirts3.Controllers
 
             if (usuario != null)
             {
-                var cliente = await _context.Clientes
-                    .FirstOrDefaultAsync(c => c.UsuarioId == id);
 
                 if (cliente != null)
                 {
@@ -176,12 +165,10 @@ namespace MarketLocalShirts3.Controllers
                         cliente.Id);
 
                    
-                    _context.Clientes.Remove(cliente);
                 }
 
                 
                 _context.Usuarios.Remove(usuario);
-
                 await _context.SaveChangesAsync();
             }
 
