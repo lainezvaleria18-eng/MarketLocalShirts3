@@ -47,41 +47,47 @@ namespace MarketLocalShirts3.Controllers
             return View(listaUsuarios);
         }
 
+        public IActionResult Create()
+        {
+            ViewBag.RolId = new SelectList(_context.Roles, "Id", "Nombre");
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UsuarioViewModel model)
         {
-           
-            string dir = Request.Form["Direccion"].ToString() ?? "";
-            string tel = Request.Form["Telefono"].ToString() ?? "";
-            string ciu = Request.Form["Ciudad"].ToString() ?? "";
-
-           
-            var usuario = new Usuario
+            if (ModelState.IsValid)
             {
-                Nombre = model.Nombre,
-                Email = model.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash ?? "123"),
-                RolId = model.RolId,
-                FechaRegistro = DateTime.Now,
-                EsActivo = true
-            };
+                var usuario = new Usuario
+                {
+                    Nombre = model.Nombre,
+                    Email = model.Email,
+                   
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash),
+                    RolId = model.RolId,
+                    FechaRegistro = DateTime.Now,
+                    EsActivo = true
+                };
 
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync(); 
+                _context.Usuarios.Add(usuario);
+                await _context.SaveChangesAsync();
 
-            var cliente = new Cliente
-            {
-                UsuarioId = usuario.Id,
-                Direccion = !string.IsNullOrEmpty(dir) ? dir : (model.Direccion ?? "Sin dirección"),
-                Telefono = !string.IsNullOrEmpty(tel) ? tel : (model.Telefono ?? "0000-0000"),
-                Ciudad = !string.IsNullOrEmpty(ciu) ? ciu : (model.Ciudad ?? "Sin ciudad")
-            };
+                var cliente = new Cliente
+                {
+                    UsuarioId = usuario.Id,
+                    Direccion = model.Direccion,
+                    Telefono = model.Telefono,
+                    Ciudad = model.Ciudad
+                };
 
-            _context.Clientes.Add(cliente);
-            await _context.SaveChangesAsync(); 
+                _context.Clientes.Add(cliente);
+                await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+            }
+            ViewBag.RolId = new SelectList(_context.Roles, "Id", "Nombre", model.RolId);
+            return View(model);
         }
 
         public async Task<IActionResult> Edit(int id)
